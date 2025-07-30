@@ -22,7 +22,7 @@ jobs:
           #git clone https://github.com/guyhill/Boot-Man
           #cd Boot-Man
           #make
-          wget -c -O https://github.com/wenerme/alpine-image/releases/download/20200607.1/alpine-x86_64-virt-3.12.img.gz |gunzip > alpine-x86_64-virt-3.12.img
+          wget -c -O- https://github.com/wenerme/alpine-image/releases/download/20200607.1/alpine-x86_64-virt-3.12.img.gz |gunzip > alpine-x86_64-virt-3.12.img
           
 
       - name: Run QEMU
