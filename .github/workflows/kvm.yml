@@ -39,6 +39,7 @@ jobs:
           run: | 
           sleep 60
           (echo root;sleep 1 ;echo root; echo id -un ; echo nproc ;echo uptime; echo halt ) > /tmp/guest.in
+          sleep 20
 
       - name: Upload video
         uses: actions/upload-artifact@v4
