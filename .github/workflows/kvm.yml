@@ -32,6 +32,7 @@ jobs:
           video-record: true
           #flags: 'Boot-Man/boot-man.bin'
           flags: | alpine-x86_64-virt-3.12.img
+
           #  -usb
           #  -device       nec-usb-xhci,id=xhci
           #  -drive       if=none,id=usbstick,file=alpine-x86_64-virt-3.12.img,format=raw
