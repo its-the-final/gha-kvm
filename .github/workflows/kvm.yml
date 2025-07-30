@@ -31,11 +31,11 @@ jobs:
         with:
           video-record: true
           #flags: 'Boot-Man/boot-man.bin'
-          flags: |
-            -usb
-            -device       nec-usb-xhci,id=xhci
-            -drive       if=none,id=usbstick,file=alpine-x86_64-virt-3.12.img,format=raw
-            -device      usb-storage,id=usbdrive,bus=xhci.0,drive=usbstick 
+          flags: | alpine-x86_64-virt-3.12.img
+          #  -usb
+          #  -device       nec-usb-xhci,id=xhci
+          #  -drive       if=none,id=usbstick,file=alpine-x86_64-virt-3.12.img,format=raw
+          #  -device      usb-storage,id=usbdrive,bus=xhci.0,drive=usbstick 
           run: sleep 60
 
       - name: Upload video
