@@ -35,7 +35,7 @@ jobs:
             pipe:/tmp/guest
             -enable-kvm
             alpine-x86_64.img
-          run: sleep 60;(echo sendkey r ;echo sendkey o ;echo sendkey o ;echo sendkey t;echo sendkey ret ;echo sendkey r ;echo sendkey o ;echo sendkey o ;echo sendkey t;echo sendkey ret ; echo sendkey t;echo sendkey o ;echo sendkey p;echo sendkey ret;sleep 2 ) > /tmp/guest.in; sleep 20
+          run: cat /tmp/guest.out & sleep 60 ;(echo sendkey r ;echo sendkey o ;echo sendkey o ;echo sendkey t;echo sendkey ret ;echo sendkey r ;echo sendkey o ;echo sendkey o ;echo sendkey t;echo sendkey ret ; echo sendkey t;echo sendkey o ;echo sendkey p;echo sendkey ret;sleep 2 ) > /tmp/guest.in; sleep 20
 
       - name: Upload video
         uses: actions/upload-artifact@v4
