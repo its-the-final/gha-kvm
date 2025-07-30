@@ -30,8 +30,10 @@ jobs:
         with:
           video-record: true
           #flags: 'Boot-Man/boot-man.bin'
-          flags: ' -smp 4  -serial pipe:/tmp/guest  -enable-kvm alpine-x86_64.img'
-
+          flags: |
+            -serial pipe:/tmp/guest
+            -enable-kvm
+            alpine-x86_64.img
           #  -usb
           #  -device       nec-usb-xhci,id=xhci
           #  -drive       if=none,id=usbstick,file=alpine-x86_64-virt-3.12.img,format=raw
