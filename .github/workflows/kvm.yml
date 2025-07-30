@@ -27,6 +27,7 @@ jobs:
 
       - name: Run QEMU
         id: run-qemu
+        uses: etchdroid/qemu-kvm-action@v1
         with:
           video-record: true
           #flags: 'Boot-Man/boot-man.bin'
