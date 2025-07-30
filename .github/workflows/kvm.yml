@@ -31,7 +31,8 @@ jobs:
           video-record: true
           #flags: 'Boot-Man/boot-man.bin'
           flags: |
-            -serial pipe:/tmp/guest
+            -serial
+            pipe:/tmp/guest
             -enable-kvm
             alpine-x86_64.img
           #  -usb
