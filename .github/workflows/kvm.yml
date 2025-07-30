@@ -11,7 +11,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
+    uses: etchdroid/qemu-kvm-action@v1
     steps:
       - uses: actions/checkout@v4
 
@@ -23,11 +23,10 @@ jobs:
           #cd Boot-Man
           #make
           wget -c -O alpine-x86_64.img https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-tiny-r0.qcow2 
-          
+          mkfifo /tmp/guest.in /tmp/guest.out
 
       - name: Run QEMU
         id: run-qemu
-        uses: etchdroid/qemu-kvm-action@v1
         with:
           video-record: true
           #flags: 'Boot-Man/boot-man.bin'
