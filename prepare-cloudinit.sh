@@ -21,6 +21,5 @@ instance-id: someid/somehostname
 EOF
 
 touch vendor-data
-
-python3 -m http.server --directory . &  ) 
+ ) 
 
