@@ -73,7 +73,7 @@ jobs:
             -device
             ide-hd,drive=cidata,bus=ahci.1
 
-          run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }} ;cat /tmp/guest.out & sleep 60 ; ( echo timmy;sleep 1;echo password ;sleep 5;echo 'bash -c "while (true);do ssh qemukvmtest@ssh-j.com -N -R qemukvm:22:localhost:22 ;done" & ' ; echo 'sudo bash -c "echo asd"'; echo 'doas bash -c "echo asd;echo ttyS0 >>/dev/ttyS0 ; echo ttyAMA0 >> /dev/ttyAMA0"';sleep 1;echo password ;sleep 2;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;sleep 3) > /tmp/guest.in & sleep 600
+          run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }} ;cat /tmp/guest.out & sleep 60 ; ( echo timmy;sleep 1;echo password ;sleep 5;echo 'ash -c "while (true);do ssh qemukvmtest@ssh-j.com -N -R qemukvm:22:localhost:22 ;done" & ' ; echo 'sudo ash -c "echo asd"'; echo 'doas ash -c "echo asd;echo ttyS0 >>/dev/ttyS0 ; echo ttyAMA0 >> /dev/ttyAMA0"';sleep 1;echo password ;sleep 2;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;sleep 3) > /tmp/guest.in & sleep 600
 #            -smbios
 #            type=1,serial=ds='nocloud;s=http://10.0.2.2:8000/'
 
