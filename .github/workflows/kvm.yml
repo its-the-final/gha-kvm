@@ -73,7 +73,7 @@ jobs:
             -device
             ide-hd,drive=cidata,bus=ahci.1
 
-          run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }} ;cat /tmp/guest.out & sleep 60 ; ( echo timmy;sleep 1;echo password ;sleep 5;echo 'doas ash -c "echo asd;test -e /dev/ttyS0 && echo ttyS0 >>/dev/ttyS0 ; test -e /dev/ttyAMA0 && echo ttyAMA0 >> /dev/ttyAMA0; apk add screen curl socat bash"';sleep 1;echo password ;sleep 15;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;echo 'ssh-keyscan ssh-j.com >> ~/.ssh/known_hosts' ;echo 'while(true);do date; ssh qtstusr1234@ssh-j.com -N -R qtstusr1234:22:localhost:22 ;sleep 1;done' ;sleep 3) > /tmp/guest.in & sleep 600
+          run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }} ;cat /tmp/guest.out & sleep 60 ; ( echo timmy;sleep 1;echo password ;sleep 5;echo 'doas ash -c "echo asd;test -e /dev/ttyS0 && echo ttyS0 >>/dev/ttyS0 ; test -e /dev/ttyAMA0 && echo ttyAMA0 >> /dev/ttyAMA0; apk add screen curl socat bash"';sleep 1;echo password ;sleep 15;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;echo 'ssh-keyscan ssh-j.com >> ~/.ssh/known_hosts;ssh-keyscan ssh.optimistixtunnel.com >> ~/.ssh/known_hosts;' ;echo echo echo 'while(true);do date; ssh qtstusr1234@ssh-j.com -N -R qtstusr1234:22:localhost:22 ;sleep 1;done';echo "socat tcp-listen:443,fork,reuseaddr tcp-connect:127.0.0.1:22 &" ;echo  "ssh -p 1122 -R 443:localhost:3000 ssh.optimistixtunnel.com" ;sleep 3) > /tmp/guest.in & sleep 600
 # echo 'screen -dmS sshj ash -c "while (true);do ssh qemukvmtest@ssh-j.com -N -R qemukvm:22:localhost:22 ;done" & '          
 #            -smbios
 #            type=1,serial=ds='nocloud;s=http://10.0.2.2:8000/'
