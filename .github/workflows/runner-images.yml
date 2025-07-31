@@ -1,0 +1,32 @@
+name: Deploy Images to GHCR
+
+env:
+  RUNNER_VERSION: '0.0.1'
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+      push-store-image:
+        runs-on: ubuntu-latest
+        defaults:
+#          run:
+#            working-directory: './Store'
+        steps:
+          - name: 'Checkout GitHub Action'
+            uses: actions/checkout@main
+
+          - name: 'Login to GitHub Container Registry'
+            uses: docker/login-action@v1
+            with:
+              registry: ghcr.io
+              username: ${{github.actor}}
+              password: ${{secrets.GITHUB_TOKEN}}
+
+          - name: 'Build Inventory Image'
+            run: |
+              cat Dockerfile | docker build . --tag ghcr.io/${{github.actor}}/gha-kvm:latest -
+              docker push ghcr.io/${{github.actor}}/gha-kvm:latest
