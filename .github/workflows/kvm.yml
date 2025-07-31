@@ -11,7 +11,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    container: ghcr.io/its-the-final/gha-kvm: latest
+    container: ghcr.io/its-the-final/gha-kvm:latest
     steps:
       - uses: actions/checkout@v4
 
