@@ -26,7 +26,7 @@ jobs:
 
       - name: PREPARE qemu
         id: prepare-qemu
-        run: bash prepare-cloudinit.sh ; which python3 || apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2
+        run: bash prepare-cloudinit.sh ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;ip -a ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
