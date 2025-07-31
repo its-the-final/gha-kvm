@@ -37,6 +37,8 @@ jobs:
           video-record: true
           #flags: 'Boot-Man/boot-man.bin'
           flags: |
+            -M
+            virt
             -serial
             pipe:/tmp/guest
             -enable-kvm
