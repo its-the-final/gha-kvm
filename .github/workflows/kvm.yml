@@ -48,6 +48,8 @@ jobs:
         uses: etchdroid/qemu-kvm-action/setup@v1
         with:
           video-record: true
+        env:
+          DEBIAN_FRONTEND: noninteractive
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
