@@ -41,7 +41,9 @@ jobs:
       #- name: PREPARE qemu
       #  id: prepareqemu
       #  run: bash prepare-cloudinit.sh ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
-
+      - name: install action
+        id: action-install
+        run: git clone https://github.com/etchdroid/qemu-kvm-action.git
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
@@ -69,6 +71,7 @@ jobs:
 
             #  -monitor
           #  pipe:/tmp/guest
+#            type=1,serial=ds='nocloud;s=http://${{ steps.prepareqemu.outputs.myip }}:8000/'
           #run: cat /tmp/guest.out & sleep 60 ;(echo sendkey r ;echo sendkey o ;echo sendkey o ;echo sendkey t;echo sendkey ret ;echo sendkey r ;echo sendkey o ;echo sendkey o ;echo sendkey t;echo sendkey ret ; echo sendkey t;echo sendkey o ;echo sendkey p;echo sendkey ret;sleep 2 ) > /tmp/guest.in; sleep 20
 
       - name: Upload video
@@ -76,4 +79,3 @@ jobs:
         with:
           name: recording
           path: ${{ steps.run-qemu.outputs.video-output }}
-#            type=1,serial=ds='nocloud;s=http://${{ steps.prepareqemu.outputs.myip }}:8000/'
