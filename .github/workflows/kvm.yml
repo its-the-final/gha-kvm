@@ -40,7 +40,7 @@ jobs:
             -smbios
             type=1,serial=ds='nocloud;s=http://${{ steps.prepare-qemu.outputs.myip }}:8000/'
             alpine-x86_64.img
-          run: echo provisioning from prepare-qemu ;cat /tmp/guest.out & sleep 60 ; ( echo alpine;sleep 1;echo myuserpassfortesting11 ;sleep 5;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;sleep 3) > /tmp/guest.in; sleep 10 
+          run: echo provisioning from ${{ steps.prepare-qemu.outputs.myip }} ;cat /tmp/guest.out & sleep 60 ; ( echo alpine;sleep 1;echo myuserpassfortesting11 ;sleep 5;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;sleep 3) > /tmp/guest.in; sleep 10 
           #  -monitor
           #  pipe:/tmp/guest
           #run: cat /tmp/guest.out & sleep 60 ;(echo sendkey r ;echo sendkey o ;echo sendkey o ;echo sendkey t;echo sendkey ret ;echo sendkey r ;echo sendkey o ;echo sendkey o ;echo sendkey t;echo sendkey ret ; echo sendkey t;echo sendkey o ;echo sendkey p;echo sendkey ret;sleep 2 ) > /tmp/guest.in; sleep 20
