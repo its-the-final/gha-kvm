@@ -24,7 +24,7 @@ jobs:
           #wget -c -O alpine-x86_64.img https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-tiny-r0.qcow2 
           wget -c https://cloud.debian.org/images/cloud/bullseye-backports/20250703-2162/debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
-          mv debian-11-backports-nocloud-amd64-20250703-2162.qcow2 alpine-x86_64.img
+          ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           mkfifo /tmp/guest.in /tmp/guest.out
 
       - name: PREPARE qemu
