@@ -32,7 +32,8 @@ jobs:
       #  run: bash prepare-cloudinit.sh ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
       - name: resize qemu
         id: resize
-        run:   which qemu-img|| apt-get update && apt-get -y install qemu-utils;    qemu-img resize +32G alpine-x86_64.qcow2
+        run:   which qemu-img|| sudo apt-get update && sudo apt-get -y install qemu-utils;    qemu-img resize +32G alpine-x86_64.qcow2
+
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
