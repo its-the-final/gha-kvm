@@ -16,7 +16,15 @@ jobs:
 
 #      - uses: ilammy/setup-nasm@v1
 
+      - name: Cache Primes
+        id: cache-primes
+        uses: actions/cache@v4
+        with:
+          path: alpine-x86_64.qcow2
+          key: ${{ runner.os }}-primes
+  
       - name: Prepare Boot-Man demo
+        if: steps.cache-primes.outputs.cache-hit != 'true'
         run: |
           #git clone https://github.com/guyhill/Boot-Man
           #cd Boot-Man
@@ -26,13 +34,11 @@ jobs:
           #tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           mkfifo /tmp/guest.in /tmp/guest.out
+          which qemu-img|| sudo apt-get update && sudo apt-get -y install qemu-utils;   time  qemu-img resize alpine-x86_64.qcow2 +32G 
 
       #- name: PREPARE qemu
       #  id: prepareqemu
       #  run: bash prepare-cloudinit.sh ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
-      - name: resize qemu
-        id: resize
-        run:   which qemu-img|| sudo apt-get update && sudo apt-get -y install qemu-utils;    qemu-img resize alpine-x86_64.qcow2 +32G 
 
       - name: Run QEMU
         id: run-qemu
