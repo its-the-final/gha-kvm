@@ -11,6 +11,11 @@ on:
 
 jobs:
       push-store-image:
+        permissions:
+          contents: read
+          packages: write
+          attestations: write
+          id-token: write
         runs-on: ubuntu-latest
         defaults:
           run:
