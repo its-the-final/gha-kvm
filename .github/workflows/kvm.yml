@@ -44,13 +44,13 @@ jobs:
 #      - name: install action
 #        id: action-install
 #        run: git clone https://github.com/etchdroid/qemu-kvm-action.git
-      - name: Setup QEMU
-        uses: etchdroid/qemu-kvm-action/setup@v1
-        with:
-          video-record: true
-        env:
-          DEBIAN_FRONTEND: noninteractive
-          TERM: linux
+#      - name: Setup QEMU
+#        uses: etchdroid/qemu-kvm-action/setup@v1
+#        with:
+#          video-record: true
+#        env:
+#          DEBIAN_FRONTEND: noninteractive
+#          TERM: linux
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
