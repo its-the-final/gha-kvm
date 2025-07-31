@@ -40,13 +40,18 @@ jobs:
             -serial
             pipe:/tmp/guest
             -enable-kvm
-            -drive 
+            -drive
             id=disk,file=alpine-x86_64.img,if=none
-            -device 
+            -device
             ahci,id=ahci
             -device
             ide-hd,drive=disk,bus=ahci.0
-
+            -drive
+            id=cidata,file=seed.img,if=none
+            -device
+            ahci,id=ahci
+            -device
+            ide-hd,drive=cidata,bus=ahci.1
           run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }} ;cat /tmp/guest.out & sleep 60 ; ( echo alpine;sleep 1;echo myuserpassfortesting11 ;sleep 5;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;sleep 3) > /tmp/guest.in; sleep 10 
 #            -smbios
 #            type=1,serial=ds='nocloud;s=http://10.0.2.2:8000/'
