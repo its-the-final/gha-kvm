@@ -21,7 +21,10 @@ jobs:
           #git clone https://github.com/guyhill/Boot-Man
           #cd Boot-Man
           #make
-          wget -c -O alpine-x86_64.img https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-tiny-r0.qcow2 
+          #wget -c -O alpine-x86_64.img https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-tiny-r0.qcow2 
+          wget -c https://cloud.debian.org/images/cloud/bullseye-backports/20250703-2162/debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
+          tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
+          mv debian-11-backports-nocloud-amd64-20250703-2162.qcow2 alpine-x86_64.img
           mkfifo /tmp/guest.in /tmp/guest.out
 
       - name: PREPARE qemu
@@ -38,7 +41,7 @@ jobs:
             pipe:/tmp/guest
             -enable-kvm
             -smbios
-            type=1,serial=ds='nocloud;s=https://its-the-final.github.io/cloud-init/'
+            type=1,serial=ds='nocloud;s=http://${{ steps.prepareqemu.outputs.myip }}:8000/'
             
             alpine-x86_64.img
           run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }} ;cat /tmp/guest.out & sleep 60 ; ( echo alpine;sleep 1;echo myuserpassfortesting11 ;sleep 5;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;sleep 3) > /tmp/guest.in; sleep 10 
