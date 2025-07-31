@@ -21,15 +21,18 @@ jobs:
           #git clone https://github.com/guyhill/Boot-Man
           #cd Boot-Man
           #make
-          wget -c -O alpine-x86_64.img https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2
+          wget -c -O alpine-x86_64.qcow2 https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2
           #wget -q -c https://cloud.debian.org/images/cloud/bullseye-backports/20250703-2162/debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           mkfifo /tmp/guest.in /tmp/guest.out
 
-      - name: PREPARE qemu
-        id: prepareqemu
-        run: bash prepare-cloudinit.sh ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
+      #- name: PREPARE qemu
+      #  id: prepareqemu
+      #  run: bash prepare-cloudinit.sh ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
+      - name: resize qemu
+        id: resize
+        run:       qemu-img resize +32G alpine-x86_64.qcow2
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
@@ -41,7 +44,7 @@ jobs:
             pipe:/tmp/guest
             -enable-kvm
             -drive
-            id=disk,file=alpine-x86_64.img,if=none
+            id=disk,file=alpine-x86_64.qcow2,if=none
             -device
             ahci,id=ahci
             -device
