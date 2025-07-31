@@ -42,7 +42,7 @@ jobs:
             -enable-kvm
             -drive
             if=none,file=alpine-x86_64.img,id=hd0 -device virtio-blk-device,drive=hd0
-	          -drive
+            -drive
             if=none,file=seed.img,format=raw,id=cidata -device virtio-blk-device,drive=cidata
             
 #            -smbios
