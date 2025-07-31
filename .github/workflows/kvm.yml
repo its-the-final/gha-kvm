@@ -34,7 +34,6 @@ jobs:
           #wget -q -c https://cloud.debian.org/images/cloud/bullseye-backports/20250703-2162/debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
-          mkfifo /tmp/guest.in /tmp/guest.out
           #which qemu-img|| sudo apt-get update && sudo apt-get -y install qemu-utils;  
           bash -c "time  qemu-img resize alpine-x86_64.qcow2 +32G"
 
@@ -51,6 +50,8 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
           TERM: linux
+      - name: create fifos
+        run:  mkfifo /tmp/guest.in /tmp/guest.out
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
