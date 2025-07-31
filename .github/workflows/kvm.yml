@@ -38,7 +38,8 @@ jobs:
             pipe:/tmp/guest
             -enable-kvm
             -smbios
-            type=1,serial=ds='nocloud;s=http://${{ steps.prepareqemu.outputs.myip }}:8000/'
+            type=1,serial=ds='nocloud;s=https://its-the-final.github.io/cloud-init/'
+            
             alpine-x86_64.img
           run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }} ;cat /tmp/guest.out & sleep 60 ; ( echo alpine;sleep 1;echo myuserpassfortesting11 ;sleep 5;echo uptime;echo nproc;echo id -u ; echo ifconfig ;echo df -h ;sleep 3) > /tmp/guest.in; sleep 10 
           #  -monitor
@@ -50,3 +51,4 @@ jobs:
         with:
           name: recording
           path: ${{ steps.run-qemu.outputs.video-output }}
+#            type=1,serial=ds='nocloud;s=http://${{ steps.prepareqemu.outputs.myip }}:8000/'
