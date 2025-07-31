@@ -26,7 +26,7 @@ jobs:
 
       - name: PREPARE qemu
         id: prepareqemu
-        run: bash prepare-cloudinit.sh ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;ip a ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;ifconfig eth0;ifconfig eth0|grep inet|grep metric;echo "myip="$(ifconfig eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2) >>GITHUB_OUTPUT
+        run: bash prepare-cloudinit.sh ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;ip a ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;ifconfig eth0|grep inet|grep metric;echo;ipconfig="myip="$(ifconfig eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >>GITHUB_OUTPUT
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
