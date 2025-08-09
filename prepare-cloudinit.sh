@@ -4,14 +4,14 @@ cat << EOF > user-data
 #cloud-config
 no_ssh_fingerprints: true
 users:
-  - name: login
-    groups: login, wheel
+  - name: alpine
+    groups: users, wheel
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQC6cZ/ZGVD547VMy4Cz/sMVAezZsv33woT8v9zCh0WuSIcMZOFIeBhI7oB6L7hwSlGmb2BNFmgJJ5ML0jy6y55rI1X0EaQV9uLTdYcfpcFUu0sbq5/9TAEWqt5EL8R7nxs7Yl8FEfUhG4GAMiDUwJK9oOIHvtzjqdCNYZKOB5JyVc3/tBqtUXbMrGP+ZLuqscxLrdbgQRg6FTOXt8jW48ofYa7nM7tMoFBXIN7wSCPpifme7HnoblHIeoPlGwyLPEiu36pnj6KAKQCZgYenx8Noj99+nnFJorxbtgIL7WMWjt+HlVaiVEZ6A6MbaZbwrhpCiow57bd3zdq3vluZwPZNNCL8AOKXtm7D35aC+wKibur7FyundFNlKpHgTtXRYNEKRj/ulW1z2HKwoU6Ban6X+rSzVmGkBiQyB/G76L8b/eXRh3Hptvbp4nQu15kGhsQXZA7g7Z25yPlmeO7pWMRJRNbohhOM/29PX1c6dH9+WoNJtkHh6Hk1fgTD0JDVxNFarIjmxv0nIQUcr0tdsL2/3o0t7sZwjtZvoFSGqKsZ5PMAqUHjJiDnGwK+GDBOoWWtrtkJXNfSxwl0Zsazj6tN4CG29sUjzss9LWcNTa8zdUhb3RY6OhpWcQaBJi/MmQVKLacwy+KxKfhMEXmNkaVWyX3eCaK1ih9q7wWM6iDWX1pJkmKlroXmRzVaSgfNb1JIRkBtiecOHN+26Bv59TbJcKkYXsbBP6P4m5VqjiJD2xw/VN6sW8Kohu9igBtxNR4ayYqKyIRPE5UbE/kl4x+84C//IfKdnRoLmCwkUauOC8z/5ThMmlASAtIOgAcdQSJRXWyWtQoZnDc5Om3SCejqflkBceQpr8JeqRN9jHDGAXCQrQjm4AUnwHnJU9O3O8CFjhUuSqVrqY3myJPN1g0T8INvF5KYzUk9Zhgp18vYeY8/TqpJbcGT3aXeIFa87LXEPk7SruPjbtUjvmqlXp8ADLXIwE6vVpLveutto1RCtp72XKc1poL7nS5BmLW5efeqJqApNx/o32sTh9ZtRpMj5+GZDr8ZPGEG5hX6ZtMqee3NtANpTgm4ocAO0kYl+kwnWJtP/Z/QceCd5NLKzzLVohNE+KlDsTTz7u0TsazOsaPPYZ2P+tO5nuFkTwA/E4aXHhc4PvyOOnREDdN24ij3owEE/tv+37i+ZWdSdTDnQMV7XzgsbmtsQbYNp2EAaiQvbDHCYmpABXRzkdwsYhIsHy535s9xed890gtcwrecqHOaUt09THpReh8i6pphVTqEcVCb+VdkoLzekbMFRhYIOlykpVpXF8rcx5owrET91UjGsoQ2ZxTwvJRTgnmOwjzGsZNxAcW2EIhPtysfhMLR mykey@host
   - name: timmy
-    groups: login, wheel
+    groups: users, wheel
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     ssh_authorized_keys:
