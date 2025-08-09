@@ -31,11 +31,11 @@ jobs:
           #git clone https://github.com/guyhill/Boot-Man
           #cd Boot-Man
           #make
+          which qemu-img|| sudo apt-get update && sudo apt-get -y install qemu-utils
           bash -c "time wget -q -c -O alpine-x86_64.qcow2 https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2"
           #wget -q -c https://cloud.debian.org/images/cloud/bullseye-backports/20250703-2162/debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
-          #which qemu-img|| sudo apt-get update && sudo apt-get -y install qemu-utils;  
           bash -c "time  qemu-img resize alpine-x86_64.qcow2 +32G"
 
       #- name: PREPARE qemu
