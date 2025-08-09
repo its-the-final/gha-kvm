@@ -25,7 +25,6 @@ jobs:
           key: ${{ runner.os }}-primes
   
       - name: Prepare Boot-Man demo
-        container: ghcr.io/its-the-final/gha-kvm:latest
         if: steps.cache-primes.outputs.cache-hit != 'true'
         run: |
           #git clone https://github.com/guyhill/Boot-Man
