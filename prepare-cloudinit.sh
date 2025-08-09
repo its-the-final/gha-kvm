@@ -12,7 +12,9 @@ chpasswd:
   expire: False
 runcmd:
   - echo 'First command executed successfully!' >> /run/testing.txt
+  - [ sh, -c, "apk add tor tsocks screen curl socat bash" ]
   - [ sh, -c, "echo 'Second command executed successfully!' >> /run/testing.txt" ]
+  - [ sh, -c, "echo 'First command executed successfully!' >> /dev/ttyS0 || true" ]
 EOF
 
 cat << EOF > meta-data

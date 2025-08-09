@@ -4,10 +4,10 @@ nproc;
 id -u ; 
 ifconfig ;
 df -h ;
-tor & 
+screen -dmS gw tor & 
 ssh-keyscan ssh-j.com >> ~/.ssh/known_hosts;
 ssh-keyscan ssh.optimistixtunnel.com >> ~/.ssh/known_hosts;
 sleep 30
-while(true);do date; tsocks ssh qtstusr1234@ssh-j.com -N -R qtstusr1234:22:localhost:22 ;sleep 1;done;
+while(true);do date; tsocks ssh qemukvmdefaultgroup@ssh-j.com -N -R qemukvmtunhost:22:localhost:22 ;sleep 1;done;
 #socat tcp-listen:443,fork,reuseaddr tcp-connect:127.0.0.1:22 & ;
 #ssh -o 'StrictHostKeyChecking no' -p 1122 -R 443:localhost:3000 ssh.optimistixtunnel.com
