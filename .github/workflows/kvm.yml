@@ -83,7 +83,7 @@ jobs:
             -drive
             id=cidata,file=seed.img,if=none
             -device
-            ide-hd,drive=cidata,bus=ahci.1 -m
+            ide-hd,drive=cidata,bus=ahci.1
 
           run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }}  ;sleep 10 ;cat /tmp/guest.out &   echo  > /tmp/guest.in  ;sleep 42 ; ( echo timmy;sleep 1;echo password111 ;sleep 5;echo 'doas ash -c "echo asd;test -e /dev/ttyS0 && echo in_term_ttyS0 >>/dev/ttyS0 ; test -e /dev/ttyAMA0 && echo in_term_ttyAMA0 >> /dev/ttyAMA0; ln -s /tmp/tsocks.conf /etc/; apk add tor tsocks screen curl socat bash"';sleep 1 ; echo password ;sleep 1;echo bash;sleep 1;cat setupscript;sleep 3) > /tmp/guest.in & sleep 20;bash -c "ps -ALFc|grep qemu;ps w|grep qemu;sleep 60; while (ps -ALFc|grep -v grep |grep qemu|grep  kvm);do sleep 60 ;echo -n .;done"
 # echo 'screen -dmS sshj ash -c "while (true);do ssh qemukvmtest@ssh-j.com -N -R qemukvm:22:localhost:22 ;done" & '          
