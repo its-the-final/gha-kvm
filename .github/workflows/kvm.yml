@@ -36,7 +36,16 @@ jobs:
           #tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           bash -c "time  qemu-img resize alpine-x86_64.qcow2 +32G"
-
+      - name: Save Primes
+        id: cache-primes-save
+        uses: actions/cache/save@v4
+        with:
+          path: alpine-x86_64.qcow2
+#          path: |
+#            path/to/dependencies
+#            some/other/dependencies
+          key: ${{ runner.os }}-primes
+#          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
       - name: PREPARE qemu
         id: prepareqemu
         run: bash prepare-cloudinit.sh; which cloud-localds || (sudo apt-get update;sudo apt-get install --yes cloud-image-utils );test -e seed.img && rm seed.img ; cloud-localds seed.img cinit/user-data cinit/meta-data ; which curl || apt-get -y --no-install-recommends curl;which python3 || apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
@@ -56,6 +65,9 @@ jobs:
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
         with:
+#          https://github.com/etchdroid/qemu-kvm-action/blob/main/action.yml
+          smp: 8
+          memory: 8192
           video-record: true
           #flags: 'Boot-Man/boot-man.bin'
           flags: |
@@ -71,7 +83,7 @@ jobs:
             -drive
             id=cidata,file=seed.img,if=none
             -device
-            ide-hd,drive=cidata,bus=ahci.1
+            ide-hd,drive=cidata,bus=ahci.1 -m
 
           run: echo provisioning from ${{ steps.prepareqemu.outputs.myip }}  ;sleep 10 ;cat /tmp/guest.out &   echo  > /tmp/guest.in  ;sleep 42 ; ( echo timmy;sleep 1;echo password111 ;sleep 5;echo 'doas ash -c "echo asd;test -e /dev/ttyS0 && echo in_term_ttyS0 >>/dev/ttyS0 ; test -e /dev/ttyAMA0 && echo in_term_ttyAMA0 >> /dev/ttyAMA0; ln -s /tmp/tsocks.conf /etc/; apk add tor tsocks screen curl socat bash"';sleep 1 ; echo password ;sleep 1;echo bash;sleep 1;cat setupscript;sleep 3) > /tmp/guest.in & sleep 20;bash -c "ps -ALFc|grep qemu;ps w|grep qemu;sleep 60; while (ps -ALFc|grep -v grep |grep qemu|grep  kvm);do sleep 60 ;echo -n .;done"
 # echo 'screen -dmS sshj ash -c "while (true);do ssh qemukvmtest@ssh-j.com -N -R qemukvm:22:localhost:22 ;done" & '          
