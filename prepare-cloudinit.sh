@@ -26,6 +26,7 @@ chpasswd:
   users:
   - {name: timmy, password: password111, type: text}
 runcmd:
+  - echo 'running cloud-init' 
   - echo 'First command executed successfully!' >> /run/testing.txt
   - [ sh, -c, "apk add tor tsocks screen curl socat bash sudo" ]
   - [ sh, -c, "echo 'Second command executed successfully!' >> /run/testing.txt" ]
