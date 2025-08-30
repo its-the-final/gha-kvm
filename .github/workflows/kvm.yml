@@ -149,13 +149,13 @@ jobs:
             ide-hd,drive=cidata,bus=ahci.1
             -k
             {{ steps.valuesprep.outputs.keymap }}
-            -net 
+            -net
             nic,model=rtl8139
-            -net 
+            -net
             user,hostfwd=tcp::2222-:22,hostfwd=tcp::15901-:5901
-            -vnc 
+            -vnc
             :1
-            -device 
+            -device
             VGA,vgamem_mb=${{ steps.valuesprep.outputs.vgamem }}
             -cdrom
             ${{ steps.valuesprep.outputs.cdrom }}
