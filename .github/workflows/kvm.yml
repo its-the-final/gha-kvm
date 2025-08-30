@@ -75,6 +75,8 @@ jobs:
           #git clone https://github.com/guyhill/Boot-Man
           #cd Boot-Man
           #make
+          #sudo rm -rf /var/cache/apt/archives; mkdir aptcache_archives;sudo ln -s $(pwd)/aptcache_archives /var/cache/apt/archives 
+          sudo chmod a+r /var/cache/apt/archives
           which qemu-img|| sudo apt-get update && ( time (sudo apt-get -y install qemu-utils netcat-openbsd cloud-image-utils 2>&1 |wc -l ))
           bash -c "mkdir images;cd images ;time wget -q -c -O machine.qcow2 ${{ steps.valuesprep.outputs.image }}"
           #wget -q -c https://cloud.debian.org/images/cloud/bullseye-backports/20250703-2162/debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
