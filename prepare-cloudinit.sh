@@ -34,7 +34,7 @@ runcmd:
   - echo 'First command executed successfully!' >> /run/testing.txt
 EOF
 RANDGROUP="qemukvm-"$RANDOM$RANDOM"-group"
-test -e ../customscript || ( echo 'bash -c "while(true);do date; tsocks ssh qemukvmdefaultgroup@ssh-j.com -N -R qemukvmtunhost:22:localhost:22 ;sleep 1;done;" &' |sed 's/qemukvmdefaultgroup/'"$RANDGROUP"'/' >> ../setupscript ; echo "ACCESS INNER THINGY AT "$(grep ssh-j.com |cut -d" " -f6-  ))
+test -e ../customscript || ( echo 'bash -c "while(true);do date; tsocks ssh qemukvmdefaultgroup@ssh-j.com -N -R qemukvmtunhost:22:localhost:22 ;sleep 1;done;" &' |sed 's/qemukvmdefaultgroup/'"$RANDGROUP"'/' >> ../setupscript ; echo "ACCESS INNER THINGY AT "$(grep ssh-j.com |cut -d" " -f3-  )"  ($RANDGROUP) ")
 test -e ../customscript || echo '  - bash -c  "echo '$(base64 -w 0  ../setupscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
 test -e ../customscript && echo '  - bash -c  "echo '$(base64 -w 0 ../customscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
 cat << EOF >> user-data
