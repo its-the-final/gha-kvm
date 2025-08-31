@@ -203,7 +203,7 @@ jobs:
 #        id: action-install
 #        run: git clone https://github.com/etchdroid/qemu-kvm-action.git
       - name: Setup QEMU
-        uses: incredinews/qemu-kvm-action/setup@v1
+        uses: incredinews/qemu-kvm-action/setup@main
         with:
           video-record: true
         env:
