@@ -60,6 +60,9 @@ jobs:
           echo "vgamem=${DEF_VGAMB:-"128"}" >> "$GITHUB_OUTPUT"
           DEF_CD=${{ github.event.inputs.vgamem }}
           MYCD=${DEF_CD:-"none"}
+          BOTDEF=cd
+          echo "${MYCD}"  | grep ^none$ || BOOTDEF=dc
+          echo "boot=$BOOTDEF"   >> "$GITHUB_OUTPUT"
           echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
           echo "${MYCD}"  | grep ^none$ || echo cdrom="file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
           echo "${MYCD}"  | grep ^none$ && echo cdrom="if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
@@ -177,7 +180,7 @@ jobs:
              which manpath|| NEEDPKG="$NEEDPKG man-db"
              which cloud-localds  || NEEDPKG="$NEEDPKG cloud-image-utils"
              for needbin in curl python3 ;do which "$needbin" || NEEDPKG="$needbin $NEEDPKG";done
-             dpkg --get-selections|grep -v deinstall$|grep -q ^qemu-kvm|| NEEDPKG="$NEEDPKG qemu-kvm"
+             #dpkg --get-selections|grep -v deinstall$|grep -q ^qemu-kvm|| NEEDPKG="$NEEDPKG qemu-kvm"
              echo "NEED: $NEEDPKG"
              [[ -z "$NEEDPKG" ]] || (   echo "apt_inst .. upd:" ; sudo apt-get update |wc -l  ; echo -n inst:; sudo apt-get install "$NEEDPKG" 2>&1 > /tmp/installres|| (sleep 0.4;cat /tmp/installres || true );( cat /tmp/installres 	|wc -l )||true ) 
              #which cloud-localds  || (sudo apt-get update;sudo apt-get install --no-install-recommends --yes iproute2 netcat-openbsd cloud-image-utils );
