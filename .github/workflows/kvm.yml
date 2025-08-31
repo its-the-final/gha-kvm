@@ -61,7 +61,7 @@ jobs:
           echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
           echo "${MYCD}"  | grep ^none$ || echo cdrom="file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
           echo "${MYCD}"  | grep ^none$ && echo cdrom="if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
-          git config --global --add safe.directory
+          git config --global --add safe.directory $(pwd)
           echo sha_short=$(git log --pretty=format:'%H' -n 1) >> "$GITHUB_OUTPUT"
           echo sha_short=$(git log --pretty=format:'%H' -n 1)
       - name: Cache Primes
@@ -132,7 +132,7 @@ jobs:
           echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
           echo "${MYCD}"  | grep ^none$ || echo cdrom="file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
           echo "${MYCD}"  | grep ^none$ && echo cdrom="if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
-          git config --global --add safe.directory
+          git config --global --add safe.directory $(pwd)
           echo sha_short=$(git log --pretty=format:'%H' -n 1) >> "$GITHUB_OUTPUT"
           echo sha_short=$(git log --pretty=format:'%H' -n 1)
       - name: Restore cache

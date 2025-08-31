@@ -36,7 +36,7 @@ jobs:
           - name: 'Build Inventory Image'
             run: |
               cat Dockerfile | docker build  --tag ghcr.io/${{github.actor}}/gha-kvm:latest -
-              docker image ls | grpe gha-kvm || true 
+              docker image ls | grep gha-kvm || true 
               docker push ghcr.io/${{github.actor}}/gha-kvm:latest
           - name: 'Squash Inventory Image'
             run: |
