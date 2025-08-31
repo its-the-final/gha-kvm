@@ -217,7 +217,8 @@ jobs:
              apt-get -y remove ovmf || true
       - name: Run QEMU
         id: run-qemu
-        uses: etchdroid/qemu-kvm-action@v1
+        uses: incredinews/qemu-kvm-action
+#        uses: etchdroid/qemu-kvm-action@v1
         env:
           TERM: linux
         with:
