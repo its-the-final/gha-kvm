@@ -90,11 +90,13 @@ jobs:
         id: cachetar
         run: |
           tar cvzf /tmp/cache.tgz .
+          mv /tmp/cache.tgz .
+          pwd
       - name: Upload math result for job 1
         uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }}-step-${{ github.run_id }}
-          path: /tmp/cache.tgz
+          path: cache.tgz
           retention-days: 1
       - name: Save Primes
         id: cache-primes-save
@@ -159,7 +161,7 @@ jobs:
       - name: cachetar
         id: cachetar
         run: |
-          tar xvzf /tmp/cache.tgz 
+          tar xvzf cache.tgz 
 ##      - name: Restore cache that can fail
 ##        # You need to specify an id to be able to tell what the status of this action was
 ##        id: restorecache1
