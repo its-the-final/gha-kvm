@@ -102,7 +102,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ./
-          key: ${{ runner.os }}-step-${{ steps.valuesprep.outputs.sha_short }}
+          key: ${{ runner.os }}-step-${{ github.run_id }}
           
 ################
   run:
@@ -139,7 +139,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ./
-          key: ${{ runner.os }}-step-${{ steps.valuesprep.outputs.sha_short }}
+          key: ${{ runner.os }}-step-${{ github.run_id }}
       - name: PREPARE qemu
         id: prepareqemu
         run: bash prepare-cloudinit.sh; which cloud-localds || (sudo apt-get update;sudo apt-get install --yes iproute2 netcat-openbsd cloud-image-utils );test -e seed.img && rm seed.img ; echo gen seed;cloud-localds seed.img cinit/user-data cinit/meta-data ; sudo apt-get update; sudo apt-get -y install curl ovmf ffmpeg i3-wm qemu-system-gui;which python3 || sudo apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
