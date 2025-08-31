@@ -2,10 +2,10 @@
 
 (
 cd /tmp/
-wget -c https://github.com/cloudflare/cloudflared/releases/download/2025.8.1/cloudflared-linux-amd64
+wget -q -c https://github.com/cloudflare/cloudflared/releases/download/2025.8.1/cloudflared-linux-amd64
 chmod +x cloudflared-linux-amd64
 
-wget -O- -c https://github.com/erebe/wstunnel/releases/download/v10.4.4/wstunnel_10.4.4_linux_amd64.tar.gz|tar xvz
+wget -O- -q -c https://github.com/erebe/wstunnel/releases/download/v10.4.4/wstunnel_10.4.4_linux_amd64.tar.gz|tar xvz
 
 ./cloudflared-linux-amd64 tunnel --url http://127.0.0.1:4334 & 
 
