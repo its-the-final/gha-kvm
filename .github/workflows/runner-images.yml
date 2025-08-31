@@ -37,4 +37,7 @@ jobs:
             run: |
               cat Dockerfile | docker build  --tag ghcr.io/${{github.actor}}/gha-kvm:latest -
               docker image ls | grep ghcr.io/${{github.actor}}/gha-kvm:latest
+              (pip install --user https://github.com/goldmann/docker-squash/archive/master.zip && docker-squash -t ghcr.io/${{github.actor}}/gha-kvm:squashed ghcr.io/${{github.actor}}/gha-kvm:latest ) || true
+              docker tag ghcr.io/${{github.actor}}/gha-kvm:squashed ghcr.io/${{github.actor}}/gha-kvm:latest || true
               docker push ghcr.io/${{github.actor}}/gha-kvm:latest
+              
