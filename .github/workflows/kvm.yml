@@ -267,7 +267,7 @@ jobs:
             pipe:/tmp/guest
             -enable-kvm
             -drive
-            id=disk,file={{ steps.valuesprep.outputs.root }},if=none
+            id=disk,file={{ steps.setroot.outputs.root }},if=none
             -device
             ahci,id=ahci
             -device
