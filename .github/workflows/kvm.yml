@@ -86,6 +86,12 @@ jobs:
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           bash -c "time  qemu-img resize images/machine.qcow2 +${{ steps.valuesprep.outputs.size }}" || true
           test -e qemu-kvm-action || git clone https://github.com/etchdroid/qemu-kvm-action.git
+      - name: Save STEP
+        id: cache-step-save
+        uses: actions/cache/save@v4
+        with:
+          path: ./
+          key: ${{ runner.os }}-step-${{ github.run_id }}
       - name: Save Primes
         id: cache-primes-save
         uses: actions/cache/save@v4
@@ -97,13 +103,13 @@ jobs:
             /var/cache/apt/archives
           key: ${{ runner.os }}-primes-${{ steps.valuesprep.outputs.imgsum }}
 #          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
-      - name: Save STEP
-        id: cache-step-save
-        uses: actions/cache/save@v4
-        with:
-          path: ./
-          key: ${{ runner.os }}-step-${{ github.run_id }}
-          
+      - name: Cache settle time
+        if: steps.cache-primes.outputs.cache-hit != 'true'
+        run: |
+             sleep 10
+      - name: Cache_global settle time
+        run: |
+             sleep 10
 ################
   run:
     runs-on: ubuntu-latest
