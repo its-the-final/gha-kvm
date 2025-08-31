@@ -174,7 +174,7 @@ jobs:
              which nc|| NEEDPKG="$NEEDPKG netcat-openbsd"
              which ip|| NEEDPKG="$NEEDPKG iproute2"
              which manpath|| NEEDPKG="$NEEDPKG man-db"
-             which cloud-localds  || "$NEEDPKG cloud-image-utils"
+             which cloud-localds  || NEEDPKG="$NEEDPKG cloud-image-utils"
              for needbin in curl python3 ;do which "$needbin" || NEEDPKG="$needbin $NEEDPKG";done
              echo "NEED: $NEEDPKG"
              [[ -z "$NEEDPKG" ]] || (   echo "apt_inst .. upd:" ; sudo apt-get update |wc -l  ; echo -n inst:; sudo apt-get install "$NEEDPKG" 2>&1 > /tmo/installres|| (sleep 0.4;cat /tmp/installres );cat /tmp/installres 	|wc -l  ) 
