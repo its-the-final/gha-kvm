@@ -87,7 +87,7 @@ jobs:
           #tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           bash -c "time  qemu-img resize images/machine.qcow2 +${{ steps.valuesprep.outputs.size }}" || true
-          test -e qemu-kvm-action || git clone https://github.com/etchdroid/qemu-kvm-action.git
+          test -e qemu-kvm-action || git clone https://github.com/incredinews/qemu-kvm-action.git
 ########      - name: cachetar
 ########        id: cachetar
 ########        run: |
