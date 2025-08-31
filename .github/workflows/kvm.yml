@@ -175,7 +175,7 @@ jobs:
              which ip|| NEEDPKG="$NEEDPKG iproute2"
              which manpath|| NEEDPKG="$NEEDPKG man-db"
              which cloud-localds  || "$NEEDPKG cloud-image-utils"
-             for needbin in cloud-localds python3 ;do which "$needbin" || NEEDPKG="$needbin $NEEDPKG";done
+             for needbin in curl dropbear python3 ;do which "$needbin" || NEEDPKG="$needbin $NEEDPKG";done
              echo "NEED: $NEEDPKG"
              [[ -z "$NEEDPKG" ]] || (   echo "apt_inst .. upd:" ; sudo apt-get update |wc -l  ; echo -n inst:; sudo apt-get install "$NEEDPKG" |wc -l  ) 
              #which cloud-localds  || (sudo apt-get update;sudo apt-get install --no-install-recommends --yes iproute2 netcat-openbsd cloud-image-utils );
