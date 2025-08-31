@@ -8,11 +8,12 @@ chmod +x cloudflared-linux-amd64
 wget -O- -c https://github.com/erebe/wstunnel/releases/download/v10.4.4/wstunnel_10.4.4_linux_amd64.tar.gz|tar xvz
 
 ./cloudflared-linux-amd64 tunnel --url http://127.0.0.1:4334 & 
-which dropbear || apt-get install -y dropbear 
+
+./wstunnel server ws://[::]:4334 --websocket-ping-frequency-sec 23 --restrict-to 127.0.0.1:2222   --restrict-to 127.0.0.1:2223 --restrict-to 127.0.0.1:15901 --restrict-to 127.0.0.1:5901 &
+
+sleep 10;
+echo "HERE AT: "$( curl -s 127.0.0.1:38661/metrics|grep hostn|grep https|cut -d'"' -f2 );
+which dropbear || sudo apt-get install -y dropbear 
 dropbear -F -m -R -g -a -p 127.0.0.1:2223 & 
 
-
-
-echo "HERE AT"
-curl -s 127.0.0.1:38661/metrics|grep hostn|grep https|cut -d'"' -f2 ;
 )

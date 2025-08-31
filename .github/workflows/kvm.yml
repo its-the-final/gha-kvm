@@ -86,6 +86,12 @@ jobs:
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           bash -c "time  qemu-img resize images/machine.qcow2 +${{ steps.valuesprep.outputs.size }}" || true
           test -e qemu-kvm-action || git clone https://github.com/etchdroid/qemu-kvm-action.git
+      - name: PREPARE qemu
+        id: prepareqemu
+        run: |
+             sed 's/SSHKEY/${{ steps.valuesprep.outputs.sshkey }}/g' setupscript -i || true
+             bash prepare-cloudinit.sh; which cloud-localds || (sudo apt-get update;sudo apt-get install --yes iproute2 netcat-openbsd cloud-image-utils );test -e seed.img && rm seed.img ; echo gen seed;cloud-localds seed.img cinit/user-data cinit/meta-data ; sudo apt-get update;which python3 || sudo apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
+                  
       - name: cachetar
         id: cachetar
         run: |
@@ -217,9 +223,7 @@ jobs:
 ##        run: |
 ##             ls -1 prepare-cloudinit.sh
 ##        continue-on-error: false
-      - name: PREPARE qemu
-        id: prepareqemu
-        run: bash prepare-cloudinit.sh; which cloud-localds || (sudo apt-get update;sudo apt-get install --yes iproute2 netcat-openbsd cloud-image-utils );test -e seed.img && rm seed.img ; echo gen seed;cloud-localds seed.img cinit/user-data cinit/meta-data ; sudo apt-get update; sudo apt-get -y install curl ovmf ffmpeg i3-wm qemu-system-gui;which python3 || sudo apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
+
       - name: Set root disk and run preloader scripts
         id: setroot
         run: |
@@ -234,6 +238,7 @@ jobs:
           echo "${MYIMG}" | grep -q ^s3b: && { cat configs/s3b.conf >> /tmp/s3b.conf ; mkdir /tmp/s3bcache ;nbdkit --filter=exitlast --port=11111 --exportname=qemu s3backer s3b_configFile=/tmp/s3b.conf ; rm /tmp/.s3b.key || true  ; } ;
           bash -c '[[ "none" = "${{ steps.valuesprep.outputs.preloader }}" ]]   || ( echo using    preloader ; PRLD="${{ steps.valuesprep.outputs.preloader }}"; echo "$PRLD" |grep -q ^https:// && (wget -c -O- "$PRLD"|bash            );  echo "$PRLD" |grep -q ^s3:// && (bash s3-script-get.sh /tmp/preload "$PRLD" ; bash /tmp/preload; rm /tmp/preload|| true   ); )'
           bash -c '[[ "none" = "${{ steps.valuesprep.outputs.loader }}" ]]   ||    ( echo using inner loader ; LOAD="${{ steps.valuesprep.outputs.loader }}";    echo "$LOAD" |grep -q ^https:// && (wget -c -O- "$LOAD" > customscrimpt );  echo "$LOAD" |grep -q ^s3:// && (bash s3-script-get.sh customscript "$LOAD" ; rm /tmp/preload|| true                      ); )'
+          
 
 #      - name: install action
 #        id: action-install
