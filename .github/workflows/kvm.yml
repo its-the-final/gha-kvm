@@ -141,8 +141,6 @@ jobs:
           git config --global --add safe.directory $(pwd)
           echo sha_short=$(git log --pretty=format:'%H' -n 1) >> "$GITHUB_OUTPUT"
           echo sha_short=$(git log --pretty=format:'%H' -n 1)
-      - name: Restore cache
-        uses: actions/cache@v4
 
       - name: Restore cache that can fail
         # You need to specify an id to be able to tell what the status of this action was
