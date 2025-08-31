@@ -36,7 +36,7 @@ EOF
 RANDGROUP="qemukvm-"$RANDOM$RANDOM"-group"
 test -e ../customscript || ( 
                           echo 'bash -c "while(true);do date; tsocks ssh qemukvmdefaultgroup@ssh-j.com -N -R qemukvmtunhost:22:localhost:22 &>> /dev/ttyS0  ;sleep 1;done;" &' |sed 's/qemukvmdefaultgroup/'"$RANDGROUP"'/'g >> ../setupscript ; 
-                          test -e /tmp/myip && ( grep "^/." wstunnel ../TMP_SCRIPT && echo "setup wston" && (
+                          test -e /tmp/myip && ( grep "^./wstunnel" ../TMP_SCRIPT && echo "setup wston" && (
                                                  ( echo;
                                                    echo "wget -O- -c https://github.com/erebe/wstunnel/releases/download/v10.4.4/wstunnel_10.4.4_linux_amd64.tar.gz|tar xvz wstunnel"
                                                    echo chmod +x wstunnel
