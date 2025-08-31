@@ -286,7 +286,7 @@ jobs:
             :1
             -device
             VGA,vgamem_mb=${{ steps.valuesprep.outputs.vgamem }}
-            -cdrom
+            -drive
             ${{ steps.valuesprep.outputs.cdrom }}
             -boot
             ${{ steps.valuesprep.outputs.boot }}

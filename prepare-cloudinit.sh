@@ -39,8 +39,9 @@ test -e ../customscript || (
                           test -e /tmp/myip && ( grep "^./wstunnel" ../TMP_SCRIPT && echo "setup wston" && (
                                                  ( echo;
                                                    echo "wget -O- -c https://github.com/erebe/wstunnel/releases/download/v10.4.4/wstunnel_10.4.4_linux_amd64.tar.gz|tar xvz wstunnel"
-                                                   echo chmod +x wstunnel
-                                                   echo '-/wstunnel client -R 'tcp://2222:127.0.0.1:22'  ws://'$(cat /tmp/myip)':4334/ --log-lvl INFO --dns-resolver-prefer-ipv4 &' 
+                                                   echo "chmod +x wstunnel"
+                                                   echo "mv wstunnel /usr/bin"
+                                                   echo '-/usr/bin/wstunnel client -R 'tcp://2222:127.0.0.1:22'  ws://'$(cat /tmp/myip)':4334/ --log-lvl INFO --dns-resolver-prefer-ipv4 &' 
                                                  ) >> ../setupscript
                                                  
                                                  )
