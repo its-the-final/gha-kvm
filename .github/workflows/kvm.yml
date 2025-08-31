@@ -267,7 +267,7 @@ jobs:
             pipe:/tmp/guest
             -enable-kvm
             -drive
-            id=disk,file={{ steps.setroot.outputs.root }},if=none
+            id=disk,file=${{ steps.setroot.outputs.root }},if=none
             -device
             ahci,id=ahci
             -device
@@ -277,7 +277,7 @@ jobs:
             -device
             ide-hd,drive=cidata,bus=ahci.1
             -k
-            {{ steps.valuesprep.outputs.keymap }}
+            ${{ steps.valuesprep.outputs.keymap }}
             -net
             nic,model=rtl8139
             -net
