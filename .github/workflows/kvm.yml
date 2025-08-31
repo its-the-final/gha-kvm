@@ -38,9 +38,7 @@ jobs:
     container: ghcr.io/its-the-final/gha-kvm:latest
     steps:
       - uses: actions/checkout@v4
-
 #      - uses: ilammy/setup-nasm@v1
-
       - name: Set default value
         id: valuesprep
         run: |
@@ -63,7 +61,7 @@ jobs:
           echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
           echo "${MYCD}"  | grep ^none$ || echo cdrom="file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
           echo "${MYCD}"  | grep ^none$ && echo cdrom="if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
-          echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_OUTPUT"
+          echo sha_short=$(git log --pretty=format:'%h' -n 1) >> "$GITHUB_OUTPUT"
           echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_OUTPUT"
 
       - name: Cache Primes
@@ -134,7 +132,7 @@ jobs:
           echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
           echo "${MYCD}"  | grep ^none$ || echo cdrom="file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
           echo "${MYCD}"  | grep ^none$ && echo cdrom="if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
-          echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_OUTPUT"
+          echo sha_short=$(git log --pretty=format:'%h' -n 1) >> "$GITHUB_OUTPUT"
           echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_OUTPUT"
       - name: Restore cache
         uses: actions/cache@v4
