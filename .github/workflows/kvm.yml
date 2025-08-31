@@ -176,6 +176,7 @@ jobs:
              which manpath|| NEEDPKG="$NEEDPKG man-db"
              which cloud-localds  || NEEDPKG="$NEEDPKG cloud-image-utils"
              for needbin in curl python3 ;do which "$needbin" || NEEDPKG="$needbin $NEEDPKG";done
+             dpkg --get-selections|grep -v deinstall$|grep -q ^qemu-kvm|| NEEDPKG="$NEEDPKG qemu-kvm"
              echo "NEED: $NEEDPKG"
              [[ -z "$NEEDPKG" ]] || (   echo "apt_inst .. upd:" ; sudo apt-get update |wc -l  ; echo -n inst:; sudo apt-get install "$NEEDPKG" 2>&1 > /tmo/installres|| (sleep 0.4;cat /tmp/installres );cat /tmp/installres 	|wc -l  ) 
              #which cloud-localds  || (sudo apt-get update;sudo apt-get install --no-install-recommends --yes iproute2 netcat-openbsd cloud-image-utils );
@@ -213,8 +214,8 @@ jobs:
         run: |
              mkfifo /tmp/guest.in /tmp/guest.out
              #echo "cache_will_fail_if_not" > /var/cache/apt/archives/nonexisitent.deb || true 
-             sudo apt-get -y remove ovmf || true
-             apt-get -y remove ovmf || true
+             #sudo apt-get -y remove ovmf || true
+             #apt-get -y remove ovmf || true
       - name: Run QEMU
         id: run-qemu
         uses: incredinews/qemu-kvm-action@main
