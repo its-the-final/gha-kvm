@@ -99,7 +99,7 @@ jobs:
 #          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
       - name: PREPARE qemu
         id: prepareqemu
-        run: bash prepare-cloudinit.sh; which cloud-localds || (sudo apt-get update;sudo apt-get install --yes netcat-openbsd cloud-image-utils );test -e seed.img && rm seed.img ; echo gen seed;cloud-localds seed.img cinit/user-data cinit/meta-data ; sudo apt-get update; sudo apt-get -y install curl ovmf ffmpeg i3-wm qemu-system-gui;which python3 || sudo apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
+        run: bash prepare-cloudinit.sh; which cloud-localds || (sudo apt-get update;sudo apt-get install --yes iproute2 netcat-openbsd cloud-image-utils );test -e seed.img && rm seed.img ; echo gen seed;cloud-localds seed.img cinit/user-data cinit/meta-data ; sudo apt-get update; sudo apt-get -y install curl ovmf ffmpeg i3-wm qemu-system-gui;which python3 || sudo apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
       - name: Set root disk and run preloader scripts
         id: setroot
         run: |
@@ -107,7 +107,7 @@ jobs:
           MYIMG=${IMG_INPUT:-"https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2"}
           echo "${MYIMG}" | grep -q ^s3b: || echo root="images/machine.qcow2" >> "$GITHUB_OUTPUT"
           echo "${MYIMG}" | grep -q ^s3b: && echo root="nbd://${{ steps.prepareqemu.outputs.myip }}:1111/qemu"  >> "$GITHUB_OUTPUT"
-          echo "${MYIMG}" | grep -q ^s3b: && ( sudo apt install nbdkit-plugin-dev make libfuse3-dev nbdkit libssl-dev nbd-client git  ; git clone https://github.com/archiecobbs/s3backer.git ;cd s3backer ;bash rebuild.sh  )
+          echo "${MYIMG}" | grep -q ^s3b: && ( sudo apt install nbdkit-plugin-dev make libfuse3-dev nbdkit libssl-dev nbd-client git ; git clone https://github.com/archiecobbs/s3backer.git ;cd s3backer ;bash rebuild.sh  )
           echo "${MYIMG}" | grep -q ^s3b: && { nbdkit s3backer --dump-plugin|grep name=s3backer || exit 1  ; } ;
           echo "${MYIMG}" | grep -q ^s3b: && { AWSURL="$MYIMG"; mydir=$(echo "$AWSURL"|cut -d/ -f4-);myhost=$(echo "$AWSURL"|cut -d/ -f3|cut -d@ -f2); myauth=$(echo "$AWSURL"|cut -d/ -f3|cut -d@ -f1) ;sed 's/MYSIZE/${{ steps.valuesprep.outputs.size }}/g;s~s3.endpoint.lan~'"${myhost}"'~g;s~BUCKETNAME/FOLDERNAME~'"$mydir"'~g' -i configs/s3b.conf ; echo "$myauth" > /tmp/awskey ; } ;
           echo "${MYIMG}" | grep ^s3b: |grep -q "KEY=" && ((echo -- "--encrypt";  echo -- "--passwordFile=/tmp/.s3b_key") > /tmp/s3b.conf ; echo "${MYIMG}" | sed 's/.\+KEY=//g' > /tmp/.s3b.key )
