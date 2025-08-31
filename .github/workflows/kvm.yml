@@ -86,6 +86,7 @@ jobs:
           #tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           bash -c "time  qemu-img resize images/machine.qcow2 +${{ steps.valuesprep.outputs.size }}"
+          test -e git qemu-kvm-action || clone https://github.com/etchdroid/qemu-kvm-action.git
       - name: Save Primes
         id: cache-primes-save
         uses: actions/cache/save@v4
@@ -130,6 +131,7 @@ jobs:
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
+        workdir: .
         with:
 #          https://github.com/etchdroid/qemu-kvm-action/blob/main/action.yml
           smp: 8

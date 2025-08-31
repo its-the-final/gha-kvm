@@ -5,8 +5,8 @@ env:
 
 on:
   push:
-    branches:
-      - main
+#    branches:
+#      - main
     path:
       - Dockerfile
   workflow_dispatch:
