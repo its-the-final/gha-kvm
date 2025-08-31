@@ -46,4 +46,3 @@ jobs:
               ( docker tag ghcr.io/${{github.actor}}/gha-kvm:squashed ghcr.io/${{github.actor}}/gha-kvm:latest && docker push ghcr.io/${{github.actor}}/gha-kvm:latest ) || true
               docker image ls | grep gha-kvm || true 
               
-              
