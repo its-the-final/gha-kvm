@@ -121,6 +121,7 @@ jobs:
     #container: ghcr.io/its-the-final/gha-kvm:latest
     needs: setup
     steps:
+      - uses: actions/checkout@v4
       - name: Set default value
         id: valuesprep
         run: |
