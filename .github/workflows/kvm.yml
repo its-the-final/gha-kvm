@@ -205,9 +205,9 @@ jobs:
 #        id: action-install
 #        run: git clone https://github.com/etchdroid/qemu-kvm-action.git
       - name: Setup QEMU
-        uses: incredinews/qemu-kvm-action/setup@main
+        uses: etchdroid/qemu-kvm-action/setup@main
         with:
-          video-record: true
+          video-record: false
         env:
           DEBIAN_FRONTEND: noninteractive
           TERM: linux
@@ -227,8 +227,7 @@ jobs:
 #          https://github.com/etchdroid/qemu-kvm-action/blob/main/action.yml
           smp: 8
           memory: 8192
-          video-record: false^
-          #flags: 'Boot-Man/boot-man.bin'
+          video-record: false
           flags: |
             -serial
             pipe:/tmp/guest
