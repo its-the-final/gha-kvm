@@ -212,7 +212,9 @@ jobs:
       - name: create fifos and whatever the thingy needs
         run: |
              mkfifo /tmp/guest.in /tmp/guest.out
-             echo "cache_will_fail_if_not" > /var/cache/apt/archives/nonexisitent.deb || true 
+             #echo "cache_will_fail_if_not" > /var/cache/apt/archives/nonexisitent.deb || true 
+             sudo apt-get -y remove ovmf || true
+             apt-get -y remove ovmf || true
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
