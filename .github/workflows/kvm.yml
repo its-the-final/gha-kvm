@@ -216,6 +216,12 @@ jobs:
              sudo apt-get -y remove ovmf || true
              apt-get -y remove ovmf || true
       - name: Run QEMU
+        devices:
+          - "/dev/kvm"
+        ports:
+          - "2222:22"
+          - "5901:5901"
+          - "15901:15901"
         id: run-qemu
         uses: incredinews/qemu-kvm-action@main
 #        uses: etchdroid/qemu-kvm-action@v1
@@ -246,7 +252,7 @@ jobs:
             -net
             nic,model=rtl8139
             -net
-            user,hostfwd=tcp::2220-:22,hostfwd=tcp::15901-:5901
+            user,hostfwd=tcp::2222-:22,hostfwd=tcp::15901-:5901
             -vnc
             :1
             -device
