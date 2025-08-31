@@ -137,7 +137,7 @@ jobs:
           echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_OUTPUT"
           echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_OUTPUT"
       - name: Restore cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ./
           key: ${{ runner.os }}-step-${{ steps.valuesprep.outputs.sha_short }}
