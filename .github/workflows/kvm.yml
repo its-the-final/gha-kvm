@@ -209,8 +209,10 @@ jobs:
 #        env:
 #          DEBIAN_FRONTEND: noninteractive
 #          TERM: linux
-      - name: create fifos
-        run:  mkfifo /tmp/guest.in /tmp/guest.out
+      - name: create fifos and whatever the thingy needs
+        run: |
+             mkfifo /tmp/guest.in /tmp/guest.out
+             echo "cache_will_fail_if_not" > /var/cache/apt/archives/nonexisitent.deb || true 
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
