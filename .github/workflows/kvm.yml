@@ -131,7 +131,6 @@ jobs:
       - name: Run QEMU
         id: run-qemu
         uses: etchdroid/qemu-kvm-action@v1
-        workdir: .
         with:
 #          https://github.com/etchdroid/qemu-kvm-action/blob/main/action.yml
           smp: 8
