@@ -33,7 +33,7 @@ on:
         description: "sshkey" 
 
 jobs:
-  test:
+  setup:
     runs-on: ubuntu-latest
     container: ghcr.io/its-the-final/gha-kvm:latest
     steps:
@@ -63,7 +63,8 @@ jobs:
           echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
           echo "${MYCD}"  | grep ^none$ || echo cdrom="file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
           echo "${MYCD}"  | grep ^none$ && echo cdrom="if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
-          
+          echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_OUTPUT"
+          echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_OUTPUT"
 
       - name: Cache Primes
         id: cache-primes
@@ -98,6 +99,48 @@ jobs:
             /var/cache/apt/archives
           key: ${{ runner.os }}-primes-${{ steps.valuesprep.outputs.imgsum }}
 #          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
+      - name: Save STEP
+        id: cache-step-save
+        uses: actions/cache/save@v4
+        with:
+          path: ./
+          key: ${{ runner.os }}-step-${{ steps.valuesprep.outputs.sha_short }}
+          
+################
+  run:
+    runs-on: ubuntu-latest
+    #container: ghcr.io/its-the-final/gha-kvm:latest
+    needs: setup
+    steps:
+      - name: Set default value
+        id: valuesprep
+        run: |
+          KEY_INPUT=${{ github.event.inputs.sshkey }}
+          echo sshkey=${IMG_INPUT:-"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQC6cZ/ZGVD547VMy4Cz/sMVAezZsv33woT8v9zCh0WuSIcMZOFIeBhI7oB6L7hwSlGmb2BNFmgJJ5ML0jy6y55rI1X0EaQV9uLTdYcfpcFUu0sbq5/9TAEWqt5EL8R7nxs7Yl8FEfUhG4GAMiDUwJK9oOIHvtzjqdCNYZKOB5JyVc3/tBqtUXbMrGP+ZLuqscxLrdbgQRg6FTOXt8jW48ofYa7nM7tMoFBXIN7wSCPpifme7HnoblHIeoPlGwyLPEiu36pnj6KAKQCZgYenx8Noj99+nnFJorxbtgIL7WMWjt+HlVaiVEZ6A6MbaZbwrhpCiow57bd3zdq3vluZwPZNNCL8AOKXtm7D35aC+wKibur7FyundFNlKpHgTtXRYNEKRj/ulW1z2HKwoU6Ban6X+rSzVmGkBiQyB/G76L8b/eXRh3Hptvbp4nQu15kGhsQXZA7g7Z25yPlmeO7pWMRJRNbohhOM/29PX1c6dH9+WoNJtkHh6Hk1fgTD0JDVxNFarIjmxv0nIQUcr0tdsL2/3o0t7sZwjtZvoFSGqKsZ5PMAqUHjJiDnGwK+GDBOoWWtrtkJXNfSxwl0Zsazj6tN4CG29sUjzss9LWcNTa8zdUhb3RY6OhpWcQaBJi/MmQVKLacwy+KxKfhMEXmNkaVWyX3eCaK1ih9q7wWM6iDWX1pJkmKlroXmRzVaSgfNb1JIRkBtiecOHN+26Bv59TbJcKkYXsbBP6P4m5VqjiJD2xw/VN6sW8Kohu9igBtxNR4ayYqKyIRPE5UbE/kl4x+84C//IfKdnRoLmCwkUauOC8z/5ThMmlASAtIOgAcdQSJRXWyWtQoZnDc5Om3SCejqflkBceQpr8JeqRN9jHDGAXCQrQjm4AUnwHnJU9O3O8CFjhUuSqVrqY3myJPN1g0T8INvF5KYzUk9Zhgp18vYeY8/TqpJbcGT3aXeIFa87LXEPk7SruPjbtUjvmqlXp8ADLXIwE6vVpLveutto1RCtp72XKc1poL7nS5BmLW5efeqJqApNx/o32sTh9ZtRpMj5+GZDr8ZPGEG5hX6ZtMqee3NtANpTgm4ocAO0kYl+kwnWJtP/Z/QceCd5NLKzzLVohNE+KlDsTTz7u0TsazOsaPPYZ2P+tO5nuFkTwA/E4aXHhc4PvyOOnREDdN24ij3owEE/tv+37i+ZWdSdTDnQMV7XzgsbmtsQbYNp2EAaiQvbDHCYmpABXRzkdwsYhIsHy535s9xed890gtcwrecqHOaUt09THpReh8i6pphVTqEcVCb+VdkoLzekbMFRhYIOlykpVpXF8rcx5owrET91UjGsoQ2ZxTwvJRTgnmOwjzGsZNxAcW2EIhPtysfhMLR mykey@host"} >> "$GITHUB_OUTPUT"
+          IMG_INPUT=${{ github.event.inputs.image }}
+          MYIMG=${IMG_INPUT:-"https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2"}
+          echo "image=${IMG_INPUT:-"https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2"}" >> "$GITHUB_OUTPUT"
+          echo imgsum=$(echo ${IMG_INPUT:-"https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2"} |md5sum|cut -d" " -f1) >> "$GITHUB_OUTPUT"
+          PRELOADR_INPUT=${{ github.event.inputs.loader }}
+          echo "preloader=${PRELOADR_INPUT:-"none"}" >> "$GITHUB_OUTPUT"
+          LOADR_INPUT=${{ github.event.inputs.loader }}
+          echo "loader=${LOADR_INPUT:-"none"}" >> "$GITHUB_OUTPUT"
+          SIZE_INPUT=${{ github.event.inputs.size }}
+          echo "size=${SIZE_INPUT:-"24G"}" >> "$GITHUB_OUTPUT"
+          DEFKEY=${{ github.event.inputs.keymap }}
+          echo "keymap=${DEFKEY:-"en-us"}" >> "$GITHUB_OUTPUT"
+          DEF_CD=${{ github.event.inputs.cdrom }}
+          MYCD=${DEF_CD:-"none"}
+          echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
+          echo "${MYCD}"  | grep ^none$ || echo cdrom="file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
+          echo "${MYCD}"  | grep ^none$ && echo cdrom="if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
+          echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_OUTPUT"
+          echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_OUTPUT"
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ./
+          key: ${{ runner.os }}-step-${{ steps.valuesprep.outputs.sha_short }}
       - name: PREPARE qemu
         id: prepareqemu
         run: bash prepare-cloudinit.sh; which cloud-localds || (sudo apt-get update;sudo apt-get install --yes iproute2 netcat-openbsd cloud-image-utils );test -e seed.img && rm seed.img ; echo gen seed;cloud-localds seed.img cinit/user-data cinit/meta-data ; sudo apt-get update; sudo apt-get -y install curl ovmf ffmpeg i3-wm qemu-system-gui;which python3 || sudo apt-get -y --no-install-recommends python3 ;cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
@@ -108,7 +151,7 @@ jobs:
           MYIMG=${IMG_INPUT:-"https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2"}
           echo "${MYIMG}" | grep -q ^s3b: || echo root="images/machine.qcow2" >> "$GITHUB_OUTPUT"
           echo "${MYIMG}" | grep -q ^s3b: && echo root="nbd://${{ steps.prepareqemu.outputs.myip }}:1111/qemu"  >> "$GITHUB_OUTPUT"
-          echo "${MYIMG}" | grep -q ^s3b: && ( sudo apt install nbdkit-plugin-dev make libfuse3-dev nbdkit libssl-dev nbd-client git ; git clone https://github.com/archiecobbs/s3backer.git ;cd s3backer ;bash rebuild.sh  )
+          echo "${MYIMG}" | grep -q ^s3b: && ( sudo apt install nbdkit-plugin-dev make libfuse3-dev nbdkit libssl-dev nbd-client git ; test -e /usr/src/s3backer || git clone https://github.com/archiecobbs/s3backer.git /usr/src/s3backer ;cd /usr/src/s3backer ;bash rebuild.sh ; sudo make install ||true )
           echo "${MYIMG}" | grep -q ^s3b: && { nbdkit s3backer --dump-plugin|grep name=s3backer || exit 1  ; } ;
           echo "${MYIMG}" | grep -q ^s3b: && { AWSURL="$MYIMG"; mydir=$(echo "$AWSURL"|cut -d/ -f4-);myhost=$(echo "$AWSURL"|cut -d/ -f3|cut -d@ -f2); myauth=$(echo "$AWSURL"|cut -d/ -f3|cut -d@ -f1) ;sed 's/MYSIZE/${{ steps.valuesprep.outputs.size }}/g;s~s3.endpoint.lan~'"${myhost}"'~g;s~BUCKETNAME/FOLDERNAME~'"$mydir"'~g' -i configs/s3b.conf ; echo "$myauth" > /tmp/awskey ; } ;
           echo "${MYIMG}" | grep ^s3b: |grep -q "KEY=" && ((echo -- "--encrypt";  echo -- "--passwordFile=/tmp/.s3b_key") > /tmp/s3b.conf ; echo "${MYIMG}" | sed 's/.\+KEY=//g' > /tmp/.s3b.key )
@@ -135,7 +178,7 @@ jobs:
 #          https://github.com/etchdroid/qemu-kvm-action/blob/main/action.yml
           smp: 8
           memory: 8192
-          video-record: true
+          video-record: false
           #flags: 'Boot-Man/boot-man.bin'
           flags: |
             -serial
