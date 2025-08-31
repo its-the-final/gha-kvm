@@ -4,11 +4,11 @@ env:
   RUNNER_VERSION: '0.0.1'
 
 on:
-  push:
+#  push:
 #    branches:
 #      - main
-    path:
-      - Dockerfile
+#    path:
+#      - Dockerfile
   workflow_dispatch:
 
 jobs:

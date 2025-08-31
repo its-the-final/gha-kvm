@@ -36,6 +36,14 @@ EOF
 RANDGROUP="qemukvm-"$RANDOM$RANDOM"-group"
 test -e ../customscript || ( 
                           echo 'bash -c "while(true);do date; tsocks ssh qemukvmdefaultgroup@ssh-j.com -N -R qemukvmtunhost:22:localhost:22 &>> /dev/ttyS0  ;sleep 1;done;" &' |sed 's/qemukvmdefaultgroup/'"$RANDGROUP"'/'g >> ../setupscript ; 
+                          test -e /tmp/myip && ( grep "^/." wstunnel ../TMP_SCRIPT && echo "setup wston" && (
+                                                 ( echo "wget -O- -c https://github.com/erebe/wstunnel/releases/download/v10.4.4/wstunnel_10.4.4_linux_amd64.tar.gz|tar xvz wstunnel"
+                                                   echo chmod +x wstunnel
+                                                   echo '-/wstunnel client -R 'tcp://2222:127.0.0.1:22'  ws://'$(cat /tmp/myip)':4334/ --log-lvl INFO --dns-resolver-prefer-ipv4 &' 
+                                                 ) >> setupscript.sh
+                                                 
+                                                 )
+                                               )
                           echo "ACCESS INNER THINGY AT "$(grep ssh-j.com  ../setupscript  |cut -d" " -f7-  )"  ($RANDGROUP) ")
 test -e ../customscript || echo '  - bash -c  "echo '$(base64 -w 0        ../setupscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
 test -e ../customscript && echo '  - bash -c  "echo '$(base64 -w 0       ../customscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
