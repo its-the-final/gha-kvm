@@ -216,18 +216,19 @@ jobs:
              sudo apt-get -y remove ovmf || true
              apt-get -y remove ovmf || true
       - name: Run QEMU
-        devices:
-          - "/dev/kvm"
-        ports:
-          - "2222:22"
-          - "5901:5901"
-          - "15901:15901"
         id: run-qemu
         uses: incredinews/qemu-kvm-action@main
 #        uses: etchdroid/qemu-kvm-action@v1
         env:
           TERM: linux
         with:
+          devices:
+            - "/dev/kvm"
+          ports:
+            - "2222:22"
+            - "5901:5901"
+            - "15901:15901"
+
 #          https://github.com/etchdroid/qemu-kvm-action/blob/main/action.yml
           smp: 8
           memory: 8192
