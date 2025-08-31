@@ -86,12 +86,16 @@ jobs:
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           bash -c "time  qemu-img resize images/machine.qcow2 +${{ steps.valuesprep.outputs.size }}" || true
           test -e qemu-kvm-action || git clone https://github.com/etchdroid/qemu-kvm-action.git
-      - name: Save STEP
-        id: cache-step-save
-        uses: actions/cache/save@v4
+      - name: cachetar
+        id: cachetar
+        run: |
+          tar cvzf /tmp/cache.tgz .
+      - name: Upload math result for job 1
+        uses: actions/upload-artifact@v4
         with:
-          path: ./
-          key: ${{ runner.os }}-step-${{ github.run_id }}
+          name: ${{ runner.os }}-step-${{ github.run_id }}
+          path: /tmp/cache.tgz
+          retention-days: 1
       - name: Save Primes
         id: cache-primes-save
         uses: actions/cache/save@v4
@@ -103,14 +107,15 @@ jobs:
             /var/cache/apt/archives
           key: ${{ runner.os }}-primes-${{ steps.valuesprep.outputs.imgsum }}
 #          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
-      - name: Cache settle time
-        if: steps.cache-primes.outputs.cache-hit != 'true'
-        run: |
-             sleep 10
-      - name: Cache_global settle time
-        run: |
-             sleep 10
+####      - name: Cache settle time
+####        if: steps.cache-primes.outputs.cache-hit != 'true'
+####        run: |
+####             sleep 10
+####      - name: Cache_global settle time
+####        run: |
+####             sleep 10
 ################
+
   run:
     runs-on: ubuntu-latest
     #container: ghcr.io/its-the-final/gha-kvm:latest
@@ -142,6 +147,14 @@ jobs:
           echo sha_short=$(git log --pretty=format:'%H' -n 1) >> "$GITHUB_OUTPUT"
           echo sha_short=$(git log --pretty=format:'%H' -n 1)
 
+      - name: Download result for job 2
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ runner.os }}-step-${{ github.run_id }}
+      - name: Del result for job 2
+        uses: geekyeggo/delete-artifact@v5
+        with:
+            name: ${{ runner.os }}-step-${{ github.run_id }}
       - name: Restore cache that can fail
         # You need to specify an id to be able to tell what the status of this action was
         id: restorecache1
@@ -151,6 +164,9 @@ jobs:
         with:
           path: ./
           key: ${{ runner.os }}-step-${{ github.run_id }}
+          
+
+
       - name: Check-and-sleep
         id: cachewait1
         run: |
