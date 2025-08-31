@@ -60,9 +60,10 @@ jobs:
           echo "vgamem=${DEF_VGAMB:-"128"}" >> "$GITHUB_OUTPUT"
           DEF_CD=${{ github.event.inputs.vgamem }}
           MYCD=${DEF_CD:-"none"}
-          BOTDEF=cd
+          BOOTDEF=cd
           echo "${MYCD}"  | grep ^none$ || BOOTDEF=dc
           echo "bootorder=$BOOTDEF"   >> "$GITHUB_OUTPUT"
+          echo "bootorder=$BOOTDEF"
           echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
           echo "${MYCD}"  | grep ^none$ || echo cdrom="file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
           echo "${MYCD}"  | grep ^none$ && echo cdrom="if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
