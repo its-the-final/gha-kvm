@@ -7,11 +7,12 @@ RUN echo \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
 ENV NODE_MAJOR 20
-RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" |  tee /etc/apt/sources.list.d/nodesource.list
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-RUN echo 'set man-db/auto-update false' | debconf-communicate >/dev/null || true 
-RUN        dpkg-reconfigure man-db || true
-
+RUN ( echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" |  tee /etc/apt/sources.list.d/nodesource.list ) && \
+    ( which debconf-communicate || ((echo '#!/bin/bash';echo 'debconf -communicate $@') >/usr/bin/debconf-communicate;chmod +x /usr/bin/debconf-communicate ) ) || true && \
+    ( echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections) && \
+    ( echo 'set man-db/auto-update false' | debconf -communicate >/dev/null ) || true && \
+    dpkg-reconfigure man-db || true && \
+    bash -c "which debconf-communicate && rm $(which debconf-communicate  ) ; ln -s /bin/true /usr/bin/debconf-communicate"
 #################RUN apt-get update && (apt-get install -y --no-install-recommends  iproute2 netcat-openbsd cloud-image-utils qemu-system-x86  qemu-utils ovmf wget curl sudo x11-utils ffmpeg libblas3 qemu-system-modules-opengl curl qemu-utils docker-compose-plugin socat docker.io docker-compose python3-pip nodejs python3-venv python3-full  cython3  jq bash build-essential autoconf automake gdb git libffi-dev zlib1g-dev libssl-dev unzip golang curl ovmf ffmpeg  nbdkit-plugin-dev make libfuse3-dev nbdkit libssl-dev nbd-client git 2>&1|grep -v "Get:") && (apt-get clean all  ||true) && which jq && which git && which curl  
 
 
@@ -19,5 +20,5 @@ RUN        dpkg-reconfigure man-db || true
 #RUN apt-get update && (apt-get install -y --no-install-recommends  iproute2 netcat-openbsd cloud-image-utils  wget curl sudo  curl qemu-utils docker-compose-plugin socat docker.io docker-compose python3-pip nodejs python3-venv python3-full  cython3  jq bash build-essential autoconf automake  git  unzip golang curl  libblas3 libffi-dev zlib1g-dev libssl-dev nbdkit-plugin-dev make  libfuse3-dev nbdkit libssl-dev nbd-client git 2>&1|grep -v "Get:") && (apt-get clean all  ||true) && which jq && which git && which curl  
 #2G w/qemu
 RUN apt-get update && ( apt-get install -y --no-install-recommends  iproute2 netcat-openbsd cloud-image-utils  wget curl sudo  curl qemu-utils docker-compose-plugin socat docker.io docker-compose python3-pip nodejs python3-venv python3-full  cython3  jq bash build-essential autoconf automake  git  unzip golang curl  libblas3 libffi-dev zlib1g-dev libssl-dev nbdkit-plugin-dev make  libfuse3-dev nbdkit libssl-dev nbd-client git qemu-system-x86  i3-wm qemu-system-gui x11-utils ffmpeg ovmf ffmpeg qemu-system-modules-opengl gdb 2>&1|grep -v "Get:") && (apt-get clean all  ||true) && which jq && which git && which curl  
-RUN bash -c "which debconf-communicate && rm $(which debconf-communicate  ) ; ln -s /bin/true /usr/bin/debconf-communicate"
+
 # 

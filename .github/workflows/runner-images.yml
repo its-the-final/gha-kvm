@@ -5,8 +5,8 @@ env:
 
 on:
   push:
-#    branches:
-#      - main
+    branches:
+      - main
     path:
       - Dockerfile
   workflow_dispatch:
@@ -38,11 +38,11 @@ jobs:
               cat Dockerfile | docker build  --tag ghcr.io/${{github.actor}}/gha-kvm:latest -
               docker image ls | grep gha-kvm || true 
               docker push ghcr.io/${{github.actor}}/gha-kvm:latest
-          - name: 'Squash Inventory Image'
-            run: |
-              docker pull ghcr.io/${{github.actor}}/gha-kvm:latest
-              docker image ls | grep ghcr.io/${{github.actor}}/gha-kvm:latest || true 
-              ( pip install --user https://github.com/goldmann/docker-squash/archive/master.zip && docker-squash -t ghcr.io/${{github.actor}}/gha-kvm:squashed ghcr.io/${{github.actor}}/gha-kvm:latest ) || true
-              ( docker tag ghcr.io/${{github.actor}}/gha-kvm:squashed ghcr.io/${{github.actor}}/gha-kvm:latest && docker push ghcr.io/${{github.actor}}/gha-kvm:latest ) || true
-              docker image ls | grep gha-kvm || true 
-              
+#          - name: 'Squash Inventory Image'
+#            run: |
+#              docker pull ghcr.io/${{github.actor}}/gha-kvm:latest
+#              docker image ls | grep ghcr.io/${{github.actor}}/gha-kvm:latest || true 
+#              ( pip install --user https://github.com/goldmann/docker-squash/archive/master.zip && docker-squash -t ghcr.io/${{github.actor}}/gha-kvm:squashed ghcr.io/${{github.actor}}/gha-kvm:latest ) || true
+#              ( docker tag ghcr.io/${{github.actor}}/gha-kvm:squashed ghcr.io/${{github.actor}}/gha-kvm:latest && docker push ghcr.io/${{github.actor}}/gha-kvm:latest ) || true
+#              docker image ls | grep gha-kvm || true 
+#              
