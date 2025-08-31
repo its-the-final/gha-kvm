@@ -19,5 +19,5 @@ RUN        dpkg-reconfigure man-db || true
 #RUN apt-get update && (apt-get install -y --no-install-recommends  iproute2 netcat-openbsd cloud-image-utils  wget curl sudo  curl qemu-utils docker-compose-plugin socat docker.io docker-compose python3-pip nodejs python3-venv python3-full  cython3  jq bash build-essential autoconf automake  git  unzip golang curl  libblas3 libffi-dev zlib1g-dev libssl-dev nbdkit-plugin-dev make  libfuse3-dev nbdkit libssl-dev nbd-client git 2>&1|grep -v "Get:") && (apt-get clean all  ||true) && which jq && which git && which curl  
 #2G w/qemu
 RUN apt-get update && ( apt-get install -y --no-install-recommends  iproute2 netcat-openbsd cloud-image-utils  wget curl sudo  curl qemu-utils docker-compose-plugin socat docker.io docker-compose python3-pip nodejs python3-venv python3-full  cython3  jq bash build-essential autoconf automake  git  unzip golang curl  libblas3 libffi-dev zlib1g-dev libssl-dev nbdkit-plugin-dev make  libfuse3-dev nbdkit libssl-dev nbd-client git qemu-system-x86  i3-wm qemu-system-gui x11-utils ffmpeg ovmf ffmpeg qemu-system-modules-opengl gdb 2>&1|grep -v "Get:") && (apt-get clean all  ||true) && which jq && which git && which curl  
-
+RUN bash -c "which debconf-communicate && rm $(which debconf-communicate  ) ; ln -s /bin/true /usr/bin/debconf-communicate"
 # 
