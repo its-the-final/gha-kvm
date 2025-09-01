@@ -91,8 +91,8 @@ jobs:
           #tar --xz -xf debian-11-backports-nocloud-amd64-20250703-2162.tar.xz
           #ln -s debian-11-backports-nocloud-amd64-20250703-2162.raw alpine-x86_64.img
           bash -c "time  qemu-img resize images/machine.qcow2 +${{ steps.valuesprep.outputs.size }}" || true
-          test -e qemu-kvm-action || git clone https://github.com/etchdroid/qemu-kvm-action.git
-#          test -e qemu-kvm-action || git clone https://github.com/incredinews/qemu-kvm-action.git
+          test -e qemu-kvm-action || git clone https://github.com/incredinews/qemu-kvm-action.git
+#          test -e qemu-kvm-action || git clone https://github.com/etchdroid/qemu-kvm-action.git
 ########      - name: cachetar
 ########        id: cachetar
 ########        run: |
@@ -209,7 +209,8 @@ jobs:
 #        id: action-install
 #        run: git clone https://github.com/etchdroid/qemu-kvm-action.git
       - name: Setup QEMU
-        uses: etchdroid/qemu-kvm-action/setup@main
+#        uses: etchdroid/qemu-kvm-action/setup@main
+        uses: incredinews/qemu-kvm-action/setup@main
         with:
           video-record: false
         env:
@@ -223,8 +224,8 @@ jobs:
              #apt-get -y remove ovmf || true
       - name: Run QEMU
         id: run-qemu
-#        uses: incredinews/qemu-kvm-action@main
-        uses: etchdroid/qemu-kvm-action@v1
+        uses: incredinews/qemu-kvm-action@main
+#        uses: etchdroid/qemu-kvm-action@v1
         env:
           TERM: linux
         with:
