@@ -279,7 +279,7 @@ jobs:
             -k
             ${{ steps.valuesprep.outputs.keymap }}
             -net
-            nic,model=rtl8139
+            nic,model=e1000
             -net
             user,hostfwd=tcp::2222-:22,hostfwd=tcp::15901-:5901
             -device
