@@ -186,8 +186,7 @@ jobs:
              which manpath|| NEEDPKG="$NEEDPKG man-db"
              which cloud-localds  || NEEDPKG="$NEEDPKG cloud-image-utils"
              for needbin in curl python3 ;do which "$needbin" || NEEDPKG="$needbin $NEEDPKG";done
-             for needpkg in cpu-checker dex fonts-vlgothic glib-networking glib-networking-common  mesa-va-drivers mesa-vdpau-drivers msr-tools  qemu-system-common qemu-system-data qemu-system-modules-spice rxvt-unicode seabios session-migration va-driver-all vdpau-driver-all xfonts-base xfonts-encodings xfonts-utils intel-media-va-driver ipxe-qemu session-migration va-driver-all vdpau-driver-all x11-utils xfonts-base seabios ;do 
-             dpkg --get-selections|grep -v deinstall$|grep -q ^$needpkg || NEEDPKG="$NEEDPKG $needpkg"
+             for needpkg in cpu-checker dex fonts-vlgothic glib-networking glib-networking-common  mesa-va-drivers mesa-vdpau-drivers msr-tools  qemu-system-common qemu-system-data qemu-system-modules-spice rxvt-unicode seabios session-migration va-driver-all vdpau-driver-all xfonts-base xfonts-encodings xfonts-utils intel-media-va-driver ipxe-qemu session-migration va-driver-all vdpau-driver-all x11-utils xfonts-base seabios ;do dpkg --get-selections|grep -v deinstall$|grep -q ^$needpkg || NEEDPKG="$NEEDPKG $needpkg";done
              echo "NEED: $NEEDPKG"
              [[ -z "$NEEDPKG" ]] || (   echo "apt_inst .. upd:" ; sudo apt-get update |wc -l  ; echo -n inst:; sudo apt-get install "$NEEDPKG" 2>&1 > /tmp/installres|| (sleep 0.4;cat /tmp/installres || true );( cat /tmp/installres 	|wc -l )||true ) 
              #which cloud-localds  || (sudo apt-get update;sudo apt-get install --no-install-recommends --yes iproute2 netcat-openbsd cloud-image-utils );
