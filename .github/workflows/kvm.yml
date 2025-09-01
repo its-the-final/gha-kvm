@@ -65,8 +65,8 @@ jobs:
           echo "bootorder=$BOOTDEF"   >> "$GITHUB_OUTPUT"
           echo "bootorder=$BOOTDEF"
           echo "${MYCD}"  | grep ^none$ || wget -O cdrom/cd.iso -c "${MYCD}"
-          echo "${MYCD}"  | grep ^none$ || echo cdrom="id=cdrom,file=cdrom/cd.iso,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
-          echo "${MYCD}"  | grep ^none$ && echo cdrom="id=cdrom,if=ide,index=1,media=cdrom" >> "$GITHUB_OUTPUT"
+          echo "${MYCD}"  | grep ^none$ || echo cdrom="id=cdrom0,file=cdrom/cd.iso,media=cdrom" >> "$GITHUB_OUTPUT"
+          echo "${MYCD}"  | grep ^none$ && echo cdrom="id=cdrom0,media=cdrom" >> "$GITHUB_OUTPUT"
           git config --global --add safe.directory $(pwd)
           echo sha_short=$(git log --pretty=format:'%H' -n 1) >> "$GITHUB_OUTPUT"
           echo sha_short=$(git log --pretty=format:'%H' -n 1)
@@ -287,7 +287,8 @@ jobs:
             -vnc
             :1
             -device
-            cdrom,drive=cdrom,bus=ahci.2
+            scsi-cd,drive=cdrom0,bus=ahci.2 
+            cdrom,
             -drive
             ${{ steps.valuesprep.outputs.cdrom }}
             -boot
