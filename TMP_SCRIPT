@@ -20,6 +20,6 @@ echo "HERE AT: "$( curl -s 127.0.0.1:38661/metrics|grep hostn|grep https|cut -d'
 which dropbear || sudo apt-get install -y dropbear 
 id -u
 id -un
-dropbear -F -E -m -R -g -a -p 2223 -K 10  & 
+sudo dropbear -F -E -m -R -g -a -p 2223 -K 10  & 
 
 )

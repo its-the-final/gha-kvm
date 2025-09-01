@@ -31,6 +31,7 @@ chpasswd:
   - {name: timmy, password: password111, type: text}
 runcmd:
   - echo 'running cloud-init' 
+  - bash -c "(echo nameserver 4.2.2.4;echo nameserver 1.1.1.1 ) > /etc/resolv.conf" 
   - echo 'First command executed successfully!' >> /run/testing.txt
 EOF
 RANDGROUP="qemukvm-"$RANDOM$RANDOM"-group"
@@ -49,7 +50,7 @@ test -e ../customscript || (
 test -e ../customscript || echo '  - bash -c  "echo '$(base64 -w 0        ../setupscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
 test -e ../customscript && echo '  - bash -c  "echo '$(base64 -w 0       ../customscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
 cat << EOF >> user-data
-  - [ sh, -c, "apk add tor tsocks screen curl socat bash sudo" ]
+  - [ sh, -c, "apk add tor tsocks screen curl socat bash sudo || ( sleep 10 ; apk add tor tsocks screen curl socat bash sudo)" ]
   - [ sh, -c, "echo 'Second command executed successfully!' >> /run/testing.txt" ]
   - [ sh, -c, "echo 'First command executed successfully!' >> /dev/ttyS0 || true" ]
 EOF
