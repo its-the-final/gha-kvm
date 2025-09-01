@@ -48,8 +48,8 @@ test -e ../customscript || (
  )
 )
                           echo "ACCESS INNER THINGY AT "$(grep ssh-j.com  ../setupscript  |cut -d" " -f7-  )"  ($RANDGROUP) ")
-test -e ../customscript || echo '  - bash -c  "echo '$(base64 -w 0        ../setupscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
-test -e ../customscript && echo '  - bash -c  "echo '$(base64 -w 0       ../customscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
+test -e ../customscript || echo '  - bash -c  "echo '$(base64 -w 0        ../setupscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log" & ' >> user-data
+test -e ../customscript && echo '  - bash -c  "echo '$(base64 -w 0       ../customscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log" & ' >> user-data
 cat << EOF >> user-data
   - [ sh, -c, "echo 'Second command executed successfully!' >> /run/testing.txt" ]
   - [ sh, -c, "echo 'First command executed successfully!' >> /dev/ttyS0 || true" ]
