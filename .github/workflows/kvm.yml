@@ -287,7 +287,7 @@ jobs:
             -vnc
             :1
             -device
-            crom,drive=cdrom,bus=ahci.2
+            cdrom,drive=cdrom,bus=ahci.2
             -drive
             ${{ steps.valuesprep.outputs.cdrom }}
             -boot
