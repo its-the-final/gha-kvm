@@ -16,6 +16,7 @@ sleep 10;
 echo "HERE AT: "$( curl -s 127.0.0.1:38661/metrics|grep hostn|grep https|cut -d'"' -f2 );
 which dropbear || sudo apt-get install -y dropbear 
 id -u
+id -un
 dropbear -F -m -R -g -a -p 127.0.0.1:2223 & 
 
 )
