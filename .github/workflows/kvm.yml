@@ -85,7 +85,7 @@ jobs:
       - name: Prepare Boot-Man demo
         if: steps.cache-primes.outputs.cache-hit != 'true'
         run: |
-          test -e apt.tgz && (echo "cd /;tar xvzf $(pwd)/apt.tgz" |bash )
+          test -e apt.tgz && sudo tar xvzf $(pwd)/apt.tgz -C / 
           #git clone https://github.com/guyhill/Boot-Man
           #cd Boot-Man
           #make
@@ -198,7 +198,7 @@ jobs:
              cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;
              echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
              (test -e apt.tgz && rm apt.tgz )||true
-             echo "cd /;tar cvzf $(pwd)/apt.tgz /var/cache/apt/archives/*.deb"|bash
+             echo "tar cvzf apt.tgz /var/cache/apt/archives/*.deb"|bash
       - name: Upload apt result for job 1
         uses: actions/upload-artifact@v4
         with:
