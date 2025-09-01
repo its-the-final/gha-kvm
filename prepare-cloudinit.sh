@@ -43,9 +43,8 @@ test -e ../customscript || (
                                                    echo "mv wstunnel /usr/bin"
                                                    echo '-/usr/bin/wstunnel client -R 'tcp://2222:127.0.0.1:22'  ws://'$(cat /tmp/myip)':4334/ --log-lvl INFO --dns-resolver-prefer-ipv4 &' 
                                                  ) >> ../setupscript
-                                                 
-                                                 )
-                                               )
+ )
+)
                           echo "ACCESS INNER THINGY AT "$(grep ssh-j.com  ../setupscript  |cut -d" " -f7-  )"  ($RANDGROUP) ")
 test -e ../customscript || echo '  - bash -c  "echo '$(base64 -w 0        ../setupscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data
 test -e ../customscript && echo '  - bash -c  "echo '$(base64 -w 0       ../customscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log"' >> user-data

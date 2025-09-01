@@ -1,5 +1,8 @@
 #/bin/bash 
 
+
+cat cinit/user-data
+echo
 (
 cd /tmp/
 wget -q -c https://github.com/cloudflare/cloudflared/releases/download/2025.8.1/cloudflared-linux-amd64
