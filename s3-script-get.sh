@@ -1,7 +1,6 @@
 #!/bin/bash 
 
 which s3cmd || (sudo apt-get update;sudo apt-get -y install s3cmd)
-
 AWSURL="$2"
 
 mydir=$(echo "$AWSURL"|cut -d/ -f4-);myhost=$(echo "$AWSURL"|cut -d/ -f3|cut -d@ -f2); myauth=$(echo "$AWSURL"|cut -d/ -f3|cut -d@ -f1)
