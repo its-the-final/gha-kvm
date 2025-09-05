@@ -1,4 +1,4 @@
-
+#!/bin/bash
 (mkdir cinit;
 cd cinit;
 cat << EOF > user-data
