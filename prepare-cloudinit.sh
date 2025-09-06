@@ -47,7 +47,7 @@ test -e ../customscript || (
                                                  ) >> ../setupscript
  )
 )
-                          echo "ACCESS INNER THINGY AT "$(grep ssh-j.com  ../setupscript  |cut -d" " -f7-  )"  ($RANDGROUP) ")
+echo "ACCESS INNER THINGY AT "$(grep ssh-j.com  ../setupscript  |cut -d" " -f7-  )"  ($RANDGROUP) ")
 test -e ../customscript || echo '  - bash -c  "echo '$(base64 -w 0        ../setupscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log" & ' >> user-data
 test -e ../customscript && echo '  - bash -c  "echo '$(base64 -w 0       ../customscript)'|base64 -d |bash 2>&1 |tee /dev/shm/setup.log" & ' >> user-data
 cat << EOF >> user-data
@@ -60,5 +60,4 @@ instance-id: someid/somehostname
 EOF
 
 touch vendor-data
- ) 
-
+)
