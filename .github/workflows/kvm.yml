@@ -180,7 +180,7 @@ jobs:
         run: |
              test -e apt.tgz && (echo "cd /;tar xvzf $(pwd)/apt.tgz" |bash )
              echo "inserting" ${{ steps.valuesprep.outputs.sshkey }}
-             sed 's~SSHKEY~${{ steps.valuesprep.outputs.sshkey }}~g' setupscript -i || true
+             sed 's~SSHKEY~${{ steps.valuesprep.outputs.sshkey }}~g' prepare-cloudinit.sh setupscript -i || true
              ( [[ -z "${{ steps.valuesprep.outputs.myip }}" ]] || echo "${{ steps.valuesprep.outputs.myip }}" > /tmp/myip ) || true 
              bash prepare-cloudinit.sh; 
              NEEDPKG=""
