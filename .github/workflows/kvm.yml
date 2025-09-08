@@ -198,6 +198,7 @@ jobs:
              cd cinit;pwd;python3 -m http.server --directory . &  sleep 2;curl 127.0.0.1:8000;
              echo;echo;ipconfig="myip="$(ip a|grep eth0|grep inet|grep -v inet6|cut -dt -f2|cut -d/ -f1|head -n1|cut -d" " -f2);echo $ipconfig;echo $ipconfig >> $GITHUB_OUTPUT
              (test -e apt.tgz && rm apt.tgz )||true
+
       - name: PREPARE tar
         id: gentar
         run: |
