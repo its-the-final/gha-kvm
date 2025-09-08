@@ -13,7 +13,7 @@ wget -O- -q -c https://github.com/erebe/wstunnel/releases/download/v10.4.4/wstun
 ./cloudflared-linux-amd64 tunnel --url http://127.0.0.1:4334 & 
 
 chmod +x wstunnel
-./wstunnel server  --websocket-ping-frequency-sec 23 --restrict-to 127.0.0.1:2222   --restrict-to 127.0.0.1:2223 --restrict-to 127.0.0.1:15901 --restrict-to 127.0.0.1:5901 ws://[::]:4334 &
+./wstunnel server  --websocket-ping-frequency-sec 23 --restrict-to 127.0.0.1:2222   --restrict-to 127.0.0.1:2223 --restrict-to 127.0.0.1:15901 --restrict-to 127.0.0.1:5901 ws://[::]:4334 2>&1 |sed 's/forwarded_for=".\+" id=/forwarded_for="0:0:0:0" id/g' &
 
 sleep 10;
 echo "HERE AT: "$( curl -s 127.0.0.1:38661/metrics|grep hostn|grep https|cut -d'"' -f2 );
