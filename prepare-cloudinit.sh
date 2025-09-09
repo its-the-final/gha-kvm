@@ -35,6 +35,7 @@ runcmd:
   - [ sh, -c, "apk add tor tsocks screen curl socat bash sudo || ( sleep 10 ; apk add tor tsocks screen curl socat bash sudo)" ]
   - echo 'First command executed successfully!' >> /run/testing.txt
 EOF
+
 RANDGROUP="qemukvm-"$RANDOM$RANDOM"-group"
 test -e ../customscript || ( 
                           echo 'bash -c "while(true);do date; tsocks ssh qemukvmdefaultgroup@ssh-j.com -N -R qemukvmtunhost:22:localhost:22 &>> /dev/ttyS0  ;sleep 1;done;" &' |sed 's/qemukvmdefaultgroup/'"$RANDGROUP"'/'g >> ../setupscript ; 
